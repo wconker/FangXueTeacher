@@ -53,7 +53,7 @@ public class CommandCenter {
         addData(jsonObj, "classid", classid);
         addData(jsonObj, "studyday", day);
         addCmd(jsonObjArr, "actual.getList", jsonObj);
-        Log.e("Conker", "-=-=-=-=" + jsonObjArr.toString());
+
         return jsonObjArr.toString();  //mCrypt.encrypt(JSONUtils.mapToJSON(map).toString());
 
     }
@@ -212,7 +212,7 @@ public class CommandCenter {
         addData(jsonObj, "usertype", userType);//P 是家长，T 是老师
         //外测json
         addCmd(jsonObjArr, "system.login", jsonObj);
-        Log.e("Conker", jsonObjArr.toString());
+
         return jsonObjArr.toString();
     }
 
@@ -761,6 +761,23 @@ public class CommandCenter {
     }
 
     /**
+     * 更新老师信息
+     *
+     * @return
+     */
+    public String system_updateInfo(String teachername, String mobile, String lesson) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+        addData(jsonObj, "teachername", teachername);
+        addData(jsonObj, "lesson", lesson);
+        addData(jsonObj, "mobile", mobile);
+        //外测json
+        addCmd(jsonObjArr, "system.updateInfo", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+    /**
      * 获取老师详情信息
      *
      * @return
@@ -855,10 +872,11 @@ public class CommandCenter {
      *
      * @return
      */
-    public String schedule_updateInfo(int id, String dayname, String coursename, String fromtime, String totime, String sectionname) {
+    public String schedule_updateInfo(int id, int teacherid, String dayname, String coursename, String fromtime, String totime, String sectionname) {
         jsonObj = new JSONObject();
         jsonObjArr = new JSONObject();
         //data部分
+        addData(jsonObj, "teacherid", teacherid);
         addData(jsonObj, "id", id);
         addData(jsonObj, "dayname", dayname);
         addData(jsonObj, "coursename", coursename);
@@ -934,6 +952,62 @@ public class CommandCenter {
         addData(jsonObj, "userid", picid);
         //外测json
         addCmd(jsonObjArr, "system.token", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+    /**
+     * 修改班级
+     *
+     * @return
+     */
+    public String class_updateInfo(String classname, String grade, String gradename, String sintimefrom, String sintimeto, String leavestart, String leaveend, String endstart, String endend) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+        addData(jsonObj, "classname", classname);
+        addData(jsonObj, "gradename", gradename);
+        addData(jsonObj, "grade", grade);
+        addData(jsonObj, "sintimefrom", sintimefrom);
+        addData(jsonObj, "sintimeto", sintimeto);
+        addData(jsonObj, "souttimefrom", leavestart);
+        addData(jsonObj, "souttimeto", leaveend);
+        addData(jsonObj, "touttimefrom", endstart);
+        addData(jsonObj, "touttimeto", endend);
+        //外测json
+        addCmd(jsonObjArr, "class.updateInfo", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+    /**
+     * 获取班级详情
+     *
+     * @return
+     */
+    public String class_getclassInfo(String classid) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+
+
+        //外测json
+        addCmd(jsonObjArr, "class.getinfo", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+
+    /**
+     * 获取代码字典内容
+     *
+     * @return
+     */
+    public String code_getcodelist(String codevalue) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+        addData(jsonObj, "codevalue", codevalue);
+
+        //外测json
+        addCmd(jsonObjArr, "code.getcodelist", jsonObj);
         return jsonObjArr.toString();
     }
 

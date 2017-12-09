@@ -109,7 +109,6 @@ public class CreateSchool extends BaseActivity implements MessageCallBack {
     public void onMessage(String str) {
         DealMessageForMe(str, observer);
 
-        Log.e("CreateSchool", str);
     }
 
 

@@ -159,7 +159,7 @@ public class NotifyInfo extends BaseActivity implements MessageCallBack {
             preview.add(dataBean.getPic().get(i).getPicpath());
             imgc.add(dataBean.getPic().get(i).getThumbnail());
         }
-         Log.e("图片","imgc"+imgc.size());
+
         photo.setUrl(imgc);
         photo.setPreviewPhoto(preview);
         if (!dataBean.getHeaderimg().isEmpty() && dataBean.getHeaderimg() != null) {

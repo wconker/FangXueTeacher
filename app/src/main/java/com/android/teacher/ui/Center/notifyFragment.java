@@ -69,7 +69,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
     @Bind(R.id.search_edit)
     EditText searchEdit;
 
-    private int delId=0;
+    private int delId = 0;
     @Bind(R.id.search_img)
     ImageView searchImg;
     @Bind(R.id.floatButton)
@@ -115,14 +115,14 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
     }
 
     void SwitchSendMessage() {
-        messageCenter.SendYouMessage(messageCenter.ChooseCommand().getlist_message(RequestId, "", "", 0),notifyFragment.this);
+        messageCenter.SendYouMessage(messageCenter.ChooseCommand().getlist_message(RequestId, "", "", 0), notifyFragment.this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.e("notifyFragment", "");
-       // messageCenter.setCallBackInterFace(this);
+        // messageCenter.setCallBackInterFace(this);
 
     }
 
@@ -152,7 +152,6 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
             @Override
             public void onRefresh() {
                 IsPull = PULLPU;
-                Log.e("RequestId", "RequestId" + RequestId);
                 SwitchSendMessage();
             }
         });
@@ -189,7 +188,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
                     if (list.size() >= 6) {
                         if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
                             messageCenter.SendYouMessage(messageCenter.ChooseCommand().getlist_message(RequestId,
-                                    "", String.valueOf(list.get(list.size() - 1).getId()), list.size()),notifyFragment.this);
+                                    "", String.valueOf(list.get(list.size() - 1).getId()), list.size()), notifyFragment.this);
                         }
                         IsPull = PUUDWON;
                     }
@@ -203,7 +202,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
             public void onClick(View view) {
                 IsPull = PULLPU;
                 messageCenter.SendYouMessage(messageCenter.ChooseCommand().getlist_message(RequestId,
-                        searchEdit.getText().toString(), "", 0),notifyFragment.this);
+                        searchEdit.getText().toString(), "", 0), notifyFragment.this);
 
 
             }
@@ -224,16 +223,16 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
                 Gson gson = new Gson();
                 Type type = new TypeToken<MessageDetailBean>() {
                 }.getType();
+                if (IsPull == PULLPU) { //如果是哦下拉刷新则清理数据项
+                    list.clear();
+
+                }
                 MessageDetailBean dataBean = gson.fromJson(String.valueOf(cmd), type);
                 if (dataBean.getData().size() > 0) {
-                    if (IsPull == PULLPU) { //如果是哦下拉刷新则清理数据项
-                        list.clear();
-                        list.addAll(dataBean.getData());
-                        listAdapter.notifyDataSetChanged();
-                    } else if (IsPull == PUUDWON) {
-                        list.addAll(dataBean.getData());
-                        listAdapter.notifyDataSetChanged();
-                    }
+
+
+                    list.addAll(dataBean.getData());
+                    listAdapter.notifyDataSetChanged();
                 } else {
                     listAdapter.setFoot(100);
                     listAdapter.notifyDataSetChanged();
@@ -254,6 +253,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
             }
         }
     }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.floatButton})
     void CliskMothed(View v) {
@@ -275,6 +275,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
                         .mainThread())
                 .subscribe(observer);
     }
+
     @Override
     public void doClick() {
 
@@ -288,10 +289,11 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
                     @Override
                     public void doClick() {
                         delId = list.get(pos).getId();
-                        delPos=pos;
+                        delPos = pos;
                         messageCenter.SendYouMessage(messageCenter.ChooseCommand().message_deleteitem(delId),
                                 notifyFragment.this);
                     }
+
                     @Override
                     public void doClick(int pos, View vi) {
                     }

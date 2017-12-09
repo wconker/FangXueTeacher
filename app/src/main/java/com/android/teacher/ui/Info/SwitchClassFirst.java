@@ -27,6 +27,7 @@ import com.android.teacher.utils.Dialog;
 import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.SharedPrefsUtil;
 import com.android.teacher.utils.Toast;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -159,7 +160,7 @@ public class SwitchClassFirst extends BaseActivity implements MessageCallBack {
     public void onMessage(String str) {
         DealMessageForMe(str, observer);
 
-        Log.e("打印返回信息", str);
+
     }
 
     class SwitchClassAsAdatper extends CommonAdapter<String> {
@@ -179,43 +180,42 @@ public class SwitchClassFirst extends BaseActivity implements MessageCallBack {
 
             Button btnEdit = viewHolder.getView(R.id.btnEdit);
             Button btnDelete = viewHolder.getView(R.id.btnDelete);
+            SwipeMenuLayout swipeMenuLayout =viewHolder.getView(R.id.SwipeMenuLayout);
+            swipeMenuLayout.setSwipeEnable(false);
             final LinearLayout lis = viewHolder.getView(R.id.class_item);
             lis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     int pressPos = viewHolder.getPostion();
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_SelectClass(Integer.parseInt(arrayList.get(pressPos))));
-
-
                 }
             });
-            btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Dialog.showDialog(mContext, "提示", "是否确认删除？", new mClickInterface() {
-                        @Override
-                        public void doClick() {
-                            int pressPos = viewHolder.getPostion();
-                            messageCenter.SendYouMessage(messageCenter.ChooseCommand().class_deleteInfo(Integer.parseInt(arrayList.get(pressPos))));
-
-                        }
-
-                        @Override
-                        public void doClick(int pos, View vi) {
-
-                        }
-                    });
-                }
-            });
-
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
+//            btnDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    Dialog.showDialog(mContext, "提示", "是否确认删除？", new mClickInterface() {
+//                        @Override
+//                        public void doClick() {
+//                            int pressPos = viewHolder.getPostion();
+//                            messageCenter.SendYouMessage(messageCenter.ChooseCommand().class_deleteInfo(Integer.parseInt(arrayList.get(pressPos))));
+//
+//                        }
+//
+//                        @Override
+//                        public void doClick(int pos, View vi) {
+//
+//                        }
+//                    });
+//                }
+//            });
+//
+//            btnEdit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
 
             viewHolder.setText(R.id.gv_title, s );
         }

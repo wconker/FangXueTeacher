@@ -67,7 +67,7 @@ public class StudentInfoHolder extends BaseHolder<StudentInfo.DataBean> {
 
     @Override
     public void getData(final StudentInfo.DataBean d) {
-        Log.e("Conker111", d.getParentname());
+
         TextView name = v.findViewById(R.id.info_name);
         TextView phone = v.findViewById(R.id.info_phone);
         TextView relationship = v.findViewById(R.id.info_relationship);

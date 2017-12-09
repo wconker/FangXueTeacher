@@ -29,6 +29,7 @@ import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.SharedPrefsUtil;
 import com.android.teacher.utils.Toast;
 import com.android.teacher.widget.HaveHeaderListView;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -62,7 +63,6 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
 
     @Override
     public void setButterKnife() {
-
         ButterKnife.bind(this);
     }
 
@@ -128,7 +128,6 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
 
                 JSONObject cmd = JSONUtils.StringToJSON(s);
                 if (JSONUtils.getString(cmd, "cmd").equals("teacher.getClassList")) {
-
                     list.clear();
                     JSONArray arr = JSONUtils.getArrInJson(cmd, "data");
                     for (int j = 0; j < arr.length(); j++) {
@@ -139,7 +138,6 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
                     adapter.notifyDataSetChanged();
                 }
                 if (JSONUtils.getString(cmd, "cmd").equals("teacher.selectClass")) {
-
 
                     JSONObject arr = JSONUtils.getSingleJSON(cmd, "data", 0);
                     SharedPrefsUtil.putValue(SwitchClass.this, "teacherXML", "schoolname", JSONUtils.getString(arr, "schoolname")); //学校名称
@@ -152,8 +150,6 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
                     Toast.FangXueToast(SwitchClass.this, JSONUtils.getString(cmd, "message"));
                 }
                 if (JSONUtils.getString(cmd, "cmd").equals("class.deleteInfo")) {
-
-
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_GetClassList());
                     Toast.FangXueToast(SwitchClass.this, JSONUtils.getString(cmd, "message"));
                 }
@@ -166,7 +162,6 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
     @Override
     public void onMessage(String str) {
         DealMessageForMe(str, observer);
-
         Log.e("打印返回信息", str);
     }
 
@@ -188,6 +183,14 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
             Button btnEdit = viewHolder.getView(R.id.btnEdit);
             Button btnDelete = viewHolder.getView(R.id.btnDelete);
             final LinearLayout lis = viewHolder.getView(R.id.class_item);
+            SwipeMenuLayout swipeMenuLayout = viewHolder.getView(R.id.SwipeMenuLayout);
+//            if (SharedPrefsUtil.getValue(mContext, "teacherXML", "roly", "0").equals("1")) {
+//                swipeMenuLayout.setSwipeEnable(true);
+//            } else {
+//                swipeMenuLayout.setSwipeEnable(false);
+//            }
+
+
             lis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -218,14 +221,19 @@ public class SwitchClass extends BaseActivity implements MessageCallBack {
                 }
             });
 
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            btnEdit.setVisibility(View.GONE);
+//            btnEdit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    Intent it = new Intent(SwitchClass.this, BindRegisterInfo.class);
+//                    String sSelectClassid = arrayList.get(viewHolder.getPostion());
+//                    it.putExtra("classid", sSelectClassid);
+//                    startActivity(it);
+//                }
+//            });
 
-                }
-            });
-
-            viewHolder.setText(R.id.gv_title, s );
+            viewHolder.setText(R.id.gv_title, s);
         }
     }
 }

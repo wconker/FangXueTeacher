@@ -222,7 +222,7 @@ public class SchduleList extends BaseActivity implements MessageCallBack {
                     Intent i = new Intent(SchduleList.this, AddSchedul.class);
                     i.putExtra("id", pos);
                     i.putExtra("teacherid", teacherId);
-                    Log.e("id", pos + "");
+
                     startActivity(i);
                 }
 
@@ -269,7 +269,7 @@ public class SchduleList extends BaseActivity implements MessageCallBack {
 
     @Override
     public void onMessage(String str) {
-        Log.e("课程表", str);
+
         DealMessageForMe(str, observer);
     }
 }

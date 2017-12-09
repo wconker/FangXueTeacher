@@ -33,10 +33,12 @@ public class ActivityCenter extends BaseActivity {
     public void setButterKnife() {
 
     }
+
     void CheckoutVersion() {
         UpdateManager manager = new UpdateManager(this);
         manager.checkUpdateInfo();
     }
+
     @Override
     public void onBackPressed() {
         return;
@@ -83,6 +85,9 @@ public class ActivityCenter extends BaseActivity {
                 CurrentPos = position;
 
                 switch (position) {
+                    case 0:
+                        ((indexFragment) mFragments.get(position)).onResume();
+                        break;
                     case 1:
                         ((MessageFragment) mFragments.get(position)).setCallBackInterFace();
                         break;

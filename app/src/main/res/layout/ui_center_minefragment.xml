@@ -144,14 +144,14 @@
 
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/classicon" />
+                                android:src="@drawable/classchangeicon" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_weight="1"
-                                android:text="班级"
+                                android:text="班级信息"
                                 android:textSize="@dimen/default_medium_text_size" />
 
 
@@ -161,10 +161,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:background="@drawable/trunright" />
+                            <!--<ImageView-->
+                            <!--android:layout_width="10dp"-->
+                            <!--android:layout_height="10dp"-->
+                            <!--android:background="@drawable/trunright" />-->
 
 
                         </LinearLayout>
@@ -201,7 +201,6 @@
                                 android:layout_height="wrap_content" />
 
 
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -224,7 +223,6 @@
                             android:padding="10dp">
 
                             <ImageView
-
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/kmicon" />
@@ -279,10 +277,10 @@
                                 android:layout_height="wrap_content" />
 
 
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:background="@drawable/trunright" />
+                            <!--<ImageView-->
+                            <!--android:layout_width="10dp"-->
+                            <!--android:layout_height="10dp"-->
+                            <!--android:background="@drawable/trunright" />-->
 
 
                         </LinearLayout>
@@ -291,11 +289,44 @@
                     <!--菜单模块-->
 
                     <LinearLayout
+                        android:id="@+id/rolyBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:background="@color/white"
                         android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/classlist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <ImageView
+
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/classicon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:text="班级维护"
+                                android:textSize="@dimen/default_medium_text_size" />
+
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:background="@drawable/trunright" />
+
+
+                        </LinearLayout>
 
                         <LinearLayout
 
@@ -434,6 +465,39 @@
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:background="@drawable/trunright" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <ImageView
+
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/versionicon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:text="当前版本"
+                                android:textSize="@dimen/default_medium_text_size" />
+
+
+                            <TextView
+                                android:id="@+id/currentversion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
 
 
                         </LinearLayout>

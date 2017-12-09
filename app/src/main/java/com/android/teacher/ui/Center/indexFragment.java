@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,28 +51,29 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class indexFragment extends BaseFragment implements MessageCallBack, DataBack {
 
-    @Bind(R.id.button2)
-    Button button2;
+
     @Bind(R.id.className)
     TextView className;
-    @Bind(R.id.ydrs)
-    TextView ydrs;
-    @Bind(R.id.sdrs)
-    TextView sdrs;
-    @Bind(R.id.delayNotify)
-    TextView delayNotify;
-    @Bind(R.id.switchClass)
-    ImageView switchclass;
     @Bind(R.id.HomeBackTime)
     TextView HomeBackTime;
+    @Bind(R.id.switchClass)
+    ImageView switchClass;
+    @Bind(R.id.boxMain)
+    LinearLayout boxMain;
+    @Bind(R.id.delayNotify)
+    TextView delayNotify;
+    @Bind(R.id.delay_layout)
+    LinearLayout delayLayout;
+    @Bind(R.id.button2)
+    ImageView button2;
+    @Bind(R.id.btn_delay)
+    ImageView btnDelay;
+    @Bind(R.id.classover)
+    LinearLayout classover;
     @Bind(R.id.gv)
     GridView gv;
     @Bind(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @Bind(R.id.classover)
-    LinearLayout classover;
-    @Bind(R.id.delay_layout)
-    LinearLayout delay_layout;
     private List<String> list = new ArrayList<>();
     private Intent inte;
     private GvAdapter adapter;
@@ -95,17 +95,16 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
     public void onResume() {
         super.onResume();
 
-        Log.e("indexfragment", "onResume: " );
-       if (((ActivityCenter) getActivity()).CurrentPos == 0)
-            stateSet();
 
+        if (((ActivityCenter) getActivity()).CurrentPos == 0)
+            stateSet();
 
     }
 
     private void stateSet() {
 
-        Log.e("indexFragment", "indexFragment");
-        String titleName = SharedPrefsUtil.getValue(getActivity(), "teacherXML", "schoolname", "") + SharedPrefsUtil.getValue(getActivity(),
+
+        String titleName = SharedPrefsUtil.getValue(getActivity(), "teacherXML", "schoolname", "") + " "+SharedPrefsUtil.getValue(getActivity(),
                 "teacherXML", "classname", "");
         className.setText(titleName);
         try {
@@ -128,7 +127,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
 
     void getNotify() {
         messageCenter.setCallBackInterFace(this);
-        messageCenter.SendYouMessage(messageCenter.ChooseCommand().getnotify(),this);
+        messageCenter.SendYouMessage(messageCenter.ChooseCommand().getnotify(), this);
     }
 
     @Override
@@ -157,7 +156,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
                 Dialog.showDialog(getActivity(), "提示", "点击按钮后将发送放学信息，是否确定？", new mClickInterface() {
                     @Override
                     public void doClick() {
-                        messageCenter.SendYouMessage(messageCenter.ChooseCommand().sendNotify(),indexFragment.this);
+                        messageCenter.SendYouMessage(messageCenter.ChooseCommand().sendNotify(), indexFragment.this);
                     }
 
                     @Override
@@ -169,11 +168,17 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
         });
         messageCenter = new MessageCenter();
         adapter = new GvAdapter(getActivity(), list, R.layout.utils_grid_item);
-        switchclass.setOnClickListener(new View.OnClickListener() {
+        switchClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SwitchClass.class);
                 getActivity().startActivity(intent);
+            }
+        });
+        btnDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopFormBottom(rootView);
             }
         });
         gv.setAdapter(adapter);
@@ -227,7 +232,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
         // takePhotoPopWin.showAsDropDown(view.findViewById(R.id.sdrsTxt));
 
         //动态位置
-        takePhotoPopWin.showAtLocation(view.findViewById(R.id.sdrsTxt), Gravity.CENTER | Gravity.LEFT, 50, -40);
+        takePhotoPopWin.showAtLocation(view.findViewById(R.id.boxMain), Gravity.CENTER | Gravity.LEFT, 50, -40);
 
         takePhotoPopWin.setInterface(this);
         takePhotoPopWin.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -235,7 +240,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
             public void onDismiss() {
                 if (!deLayStr.isEmpty()) {
                     delayNotify.setText(deLayStr);
-                    delay_layout.setVisibility(View.VISIBLE);
+                    delayLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -272,7 +277,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
         JSONObject cmd = JSONUtils.StringToJSON(s);
         //教师版一键放学
         if (JSONUtils.getString(cmd, "cmd").equals("class.leave")) {
-            messageCenter.SendYouMessage(messageCenter.ChooseCommand().getnotify(),this);
+            messageCenter.SendYouMessage(messageCenter.ChooseCommand().getnotify(), this);
             Toast.FangXueToast(getActivity(), JSONUtils.getString(cmd, "message"));
         }
         if (JSONUtils.getString(cmd, "cmd").equals("system.getnotify")) {
@@ -287,13 +292,11 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
             if (timeofplan != null && !JSONUtils.getString(data, "reason").equals("null") && !timeofplan.isEmpty()) {
                 String message = "【预计" + timeofplan + "放学】" + ":" + JSONUtils.getString(data, "reason");
                 delayNotify.setText(message);
-                delay_layout.setVisibility(View.VISIBLE);
+                delayLayout.setVisibility(View.VISIBLE);
             } else {
                 delayNotify.setText("");
-                delay_layout.setVisibility(View.GONE);
+                delayLayout.setVisibility(View.GONE);
             }
-            ydrs.setText(JSONUtils.getString(data, "studentcount") + "");
-            sdrs.setText(JSONUtils.getString(data, "arrivestudent") + "");
 
             refresh.setRefreshing(false);
         }

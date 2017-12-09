@@ -29,6 +29,7 @@ import com.android.teacher.ui.Info.SwitchClassFirst;
 import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.SharedPrefsUtil;
 import com.android.teacher.utils.Toast;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -119,14 +120,16 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         //需要的权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_DENIED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_DENIED
                 ) {
-            ActivityCompat.requestPermissions(this,
+                   ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.WAKE_LOCK,
                             Manifest.permission.CALL_PHONE,
+                            Manifest.permission.CAMERA,
                             Manifest.permission.RECEIVE_BOOT_COMPLETED, //开机自启
                             Manifest.permission.READ_PHONE_STATE,  //为止
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,  //SD卡读取
@@ -152,10 +155,10 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         switch (v.getId()) {
             case R.id.btn_next:
                 if (toolbarTitle.getText().equals("教师版登录")) {
-                    Log.e("2", 2 + "");
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().login(et_username.getText().toString(), et_password.getText().toString(), MathineCode(), "T"));
-                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "MathineCode", MathineCode()); //机器码
 
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "MathineCode", MathineCode()); //机器码
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", "");
                 } else {
 
                     SystemRegister registerBean = new SystemRegister();
@@ -222,7 +225,6 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         BtnBind();
         messageCenter = new MessageCenter();
         DealWithData();
-
     }
 
     private void DealWithData() {
@@ -292,7 +294,11 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "headerimg", JSONUtils.getString(login, "headerimg")); //头像
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "teacherid", JSONUtils.getString(login, "teacherid")); //老师id
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "version", JSONUtils.getString(login, "version")); //版本信息
-                    messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_GetClassList());
+
+                    if (SharedPrefsUtil.getValue(GetPhoneForRegister.this, "teacherXML", "classid", "").equals("")) {
+                        messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_GetClassList());
+                    }
+
                 } else {
                     ImageShowAtFirstAll.setVisibility(View.GONE);
                     Toast.FangXueToast(this, JSONUtils.getString(cmd, "message", ""));
@@ -303,24 +309,22 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                 if (JSONUtils.getInt(cmd, "code", -1) == 1) {
 
                     int classid = 0;
-                    //这里只判断classid 为空的情况,防止和http中的重连重复发送导致crash
-                    Log.e("CLASSID", SharedPrefsUtil.getValue(GetPhoneForRegister.this, "teacherXML", "classid", "") + "00");
-                    if (SharedPrefsUtil.getValue(GetPhoneForRegister.this, "teacherXML", "classid", "").equals("")) {
-                        if (JSONUtils.getJSONArray(cmd, "data").length() > 0) { //是否绑定班级,如果绑定了只有一个班级的情况 直接调用选择班级,如果大于1 进入选择班级界面,如果没有班级直接进入首页
-                            if (JSONUtils.getJSONArray(cmd, "data").length() == 1) {
-                                JSONObject classObj = JSONUtils.getSingleJSON(cmd, "data", 0);
-                                classid = JSONUtils.getInt(classObj, "classid", 0);
-                                messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_SelectClass(classid));
-                            } else {
-                                startActivity(new Intent(GetPhoneForRegister.this, SwitchClassFirst.class));
-                                finish();
-                            }
+
+                    if (JSONUtils.getJSONArray(cmd, "data").length() > 0) { //是否绑定班级,如果绑定了只有一个班级的情况 直接调用选择班级,如果大于1 进入选择班级界面,如果没有班级直接进入首页
+                        if (JSONUtils.getJSONArray(cmd, "data").length() == 1) {
+                            JSONObject classObj = JSONUtils.getSingleJSON(cmd, "data", 0);
+                            classid = JSONUtils.getInt(classObj, "classid", 0);
+                            messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_SelectClass(classid));
                         } else {
-                            //只注册老师信息没有进行绑定的时候
-                            startActivity(new Intent(GetPhoneForRegister.this, ActivityCenter.class));
-                            ThisFinis();
+                            startActivity(new Intent(GetPhoneForRegister.this, SwitchClassFirst.class));
+                            finish();
                         }
+                    } else {
+                        //只注册老师信息没有进行绑定的时候
+                        startActivity(new Intent(GetPhoneForRegister.this, ActivityCenter.class));
+                        ThisFinis();
                     }
+
                 }
                 break;
             case "teacher.selectClass":
@@ -328,7 +332,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                 SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "username", JSONUtils.getString(classInfo, "mobile")); //登錄手機
                 SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "schoolname", JSONUtils.getString(classInfo, "schoolname")); //登錄手機
                 SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classname", JSONUtils.getString(classInfo, "classname")); //登錄手機
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", JSONUtils.getString(classInfo, "classid")); //登錄手機
+                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", JSONUtils.getString(classInfo, "classid")); //classid
                 SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "lesson", JSONUtils.getString(classInfo, "lesson")); //登錄手機
 
                 SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "roly", JSONUtils.getString(classInfo, "adminflag")); //登錄手機
@@ -396,7 +400,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
     @Override
     public void onMessage(String str) {
 
-        Log.e("GetPhoneForRegister", str);
+
         DealMessageForMe(str, observer);
     }
 }

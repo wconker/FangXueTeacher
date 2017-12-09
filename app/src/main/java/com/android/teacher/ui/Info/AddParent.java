@@ -98,15 +98,19 @@ public class AddParent extends Activity implements MessageCallBack {
     private void initView() {
 
         final int StudentId = getIntent().getIntExtra("studentid", 0);
-        toolbarTitle.setText("添加家长");
+
 
         parentid = getIntent().getIntExtra("parentid", 0);
 
         if (parentid > 0) {
+            toolbarTitle.setText("修改家长");
+            messageCenter.SendYouMessage(messageCenter.ChooseCommand().parent_getInfo(parentid, StudentId),AddParent.this);
 
-            messageCenter.SendYouMessage(messageCenter.ChooseCommand().parent_getInfo(parentid, StudentId));
+            submit.setText("修改");
 
+        }else {
 
+            toolbarTitle.setText("添加家长");
         }
 
 

@@ -123,9 +123,13 @@ public class TakePhotoPopWin extends PopupWindow implements MessageCallBack {
                 Dialog.showDialog(mContext, "提示", "确定发送延迟信息？", new mClickInterface() {
                     @Override
                     public void doClick() {
+                        int lengthH = String.valueOf(mHour).length();
+                        int lengthM = String.valueOf(mMinutte).length();
                         messageCenter.setCallBackInterFace(TakePhotoPopWin.this);
                         messageCenter.SendYouMessage(messageCenter.ChooseCommand().delay(btn_take_time.getText().toString(), message_delay.getText().toString()));
-                        buildStr = "【预计" + mHour + ":" + mMinutte + "放学】" + message_delay.getText().toString();
+                        buildStr = "【预计" + (lengthH == 2 ? mHour + "" : "0" + mHour) + ":" + (lengthM == 2 ? mMinutte + "" : "0" + mMinutte) + "放学】" + message_delay.getText().toString();
+
+
                     }
 
                     @Override
@@ -200,8 +204,8 @@ public class TakePhotoPopWin extends PopupWindow implements MessageCallBack {
             mHour = timePicker.getHour();
         } else {
             b.append(timePicker.getCurrentHour()).append(":").append(timePicker.getCurrentMinute());
-            mMinutte = timePicker.getCurrentHour();
-            mHour = timePicker.getCurrentMinute();
+            mHour = timePicker.getCurrentHour();
+            mMinutte = timePicker.getCurrentMinute();
         }
         btn_take_time.setText(b);
     }
@@ -214,7 +218,7 @@ public class TakePhotoPopWin extends PopupWindow implements MessageCallBack {
                 .observeOn(AndroidSchedulers
                         .mainThread())
                 .subscribe(observer);
-        Log.e("TakePhotoPopWin", str);
+
 
     }
 }

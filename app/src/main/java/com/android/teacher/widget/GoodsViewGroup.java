@@ -59,7 +59,6 @@ public class GoodsViewGroup<X extends TextView> extends ViewGroup {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         viewWidth = measureWidth(widthMeasureSpec);
         viewHeight = measureHeight(heightMeasureSpec);
-        Log.e(TAG, "onMeasure:" + viewWidth + ":" + viewHeight);
         // 计算自定义的ViewGroup中所有子控件的大小
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         // 设置自定义的控件MyViewGroup的大小

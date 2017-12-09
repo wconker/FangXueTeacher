@@ -50,7 +50,7 @@ public class HomeWork extends BaseHolder<MessageDetailBean.DataBean> {
     @Override
     public void getData(final MessageDetailBean.DataBean d) {
 
-        Log.e("看看有没有数据",d.getWorktitle());
+
         CardView cardView_item = item.findViewById(R.id.cardView_item);
         View read = item.findViewById(R.id.read);
         Button btnDel = item.findViewById(R.id.btnDelete);

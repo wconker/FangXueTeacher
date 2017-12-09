@@ -101,7 +101,6 @@ public class MessageFragment extends BaseFragment implements OnTabSelectListener
     }
 
     public void setCallBackInterFace() {
-        Log.e("Message界面当前", "RequestId==" + ((notifyFragment) mFragments.get(mPosition)).RequestId + ";mPost=" + mPosition);
         if (FirstLoad == 0 || FirstLoad == 1) {
             ((notifyFragment) mFragments.get(mPosition)).list.clear();
             ((notifyFragment) mFragments.get(mPosition)).setRequest(mPosition);

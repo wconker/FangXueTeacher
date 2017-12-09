@@ -63,10 +63,8 @@ public class SchedulFromDay extends Activity implements MessageCallBack {
             JSONObject cmd = JSONUtils.StringToJSON(s);
             if (JSONUtils.getInt(cmd, "code", 0) == 1) {
                 if (JSONUtils.getString(cmd, "cmd").equals("schedule.copyfromday")) {
-
                     finish();
                 }
-
 
             }
 
@@ -107,6 +105,6 @@ public class SchedulFromDay extends Activity implements MessageCallBack {
                         .mainThread())
                 .subscribe(observer);
 
-        Log.e("按天复制", str);
+
     }
 }

@@ -160,6 +160,7 @@ public class StudentInfo extends BaseActivity implements MessageCallBack {
 
     @Override
     public void onMessage(String str) {
+
         DealMessageForMe(str, observe);
     }
 

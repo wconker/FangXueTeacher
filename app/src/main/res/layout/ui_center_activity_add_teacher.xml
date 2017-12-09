@@ -42,7 +42,7 @@
             android:clickable="true"
 
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 
@@ -76,9 +76,17 @@
             android:text="科目"
             android:typeface="monospace" />
 
-        <EditText
-            android:id="@+id/lesson_et"
+
+
+        <Spinner
+
+           android:id="@+id/km"
             android:layout_width="match_parent"
+            android:layout_height="45dp"></Spinner>
+        <EditText
+
+            android:id="@+id/lesson_et"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@null"
             android:clickable="true"
@@ -86,7 +94,6 @@
             android:paddingLeft="8dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
-
 
     </LinearLayout>
 
@@ -127,7 +134,7 @@
             android:clickable="true"
             android:inputType="phone"
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 

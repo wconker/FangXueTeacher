@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:background="@mipmap/class_room"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.android.teacher.ui.Center.indexFragment">
 
@@ -18,43 +17,76 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <!--头部--> <LinearLayout
-            android:id="@+id/boxMain"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary">
-
-            <ImageView
-                android:id="@+id/switchClass"
-                android:layout_width="0dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:src="@drawable/chooseclass"
-
-                />
-
-            <TextView
-                android:id="@+id/className"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="高新实验702班"
-                android:textColor="@color/white"
-                android:textSize="20dp" />
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:clickable="false"
-                android:enabled="false" />
+            <!--头部-->
+            <LinearLayout
+                android:id="@+id/boxMain"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bgl"
+                android:orientation="vertical">
 
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/className"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:text="高新实验702班"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/HomeBackTime"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1.5"
+                        android:gravity="right|bottom"
+                        android:paddingLeft="15dp"
+                        android:text="19:00"
+                        android:textColor="@color/white"
+                        android:textSize="34dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="left|bottom"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="15dp"
+                        android:text="放学"
+                        android:textColor="@color/white"
+                        android:textSize="11dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/switchClass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:src="@drawable/classicon" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:enabled="false" />
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/delay_layout"
@@ -80,132 +112,65 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/ydrsTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="应到人数"
-                        android:textColor="@color/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/ydrs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ydrsTxt"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="28dp" />
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:visibility="gone">
-
-                    <TextView
-
-                        android:id="@+id/sdrsTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="实到人数"
-                        android:textColor="@color/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/sdrs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/sdrsTxt"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="#ff6a47"
-                        android:textSize="28dp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/white">
-
-                    <TextView
-                        android:id="@+id/teachertxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="放学时间"
-                        android:textColor="@color/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/HomeBackTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/teachertxt"
-                        android:gravity="center"
-                        android:text="--:--"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="28dp" />
-                </RelativeLayout>
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/classover"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/circle"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="11dp"
-                    android:src="@drawable/button" />
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@null"
+                <RelativeLayout
                     android:gravity="center"
-                    android:text="点击放学"
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+
+                        android:gravity="center"
+                        android:id="@+id/button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icon1" />
+
+                    <TextView
+
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button2"
+                        android:text="点击放学" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:gravity="center"
+                        android:id="@+id/btn_delay"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icon2" />
+
+                    <TextView
+
+
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_delay"
+                        android:text="延迟放学" />
+                </RelativeLayout>
+
+
+
             </LinearLayout>
 
             <GridView
@@ -223,4 +188,5 @@
             </GridView>
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

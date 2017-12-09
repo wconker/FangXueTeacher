@@ -4,20 +4,32 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.teacher.R;
 import com.android.teacher.callback.MessageCallBack;
+import com.android.teacher.entity.CodeDic;
+import com.android.teacher.entity.MessageDetailBean;
 import com.android.teacher.newwork.MessageCenter;
+import com.android.teacher.ui.auth.BindRegisterInfo;
 import com.android.teacher.ui.auth.GetPhoneForRegister;
 import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.SharedPrefsUtil;
 import com.android.teacher.utils.Toast;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,7 +50,10 @@ public class AddTeacher extends Activity implements MessageCallBack {
     EditText teacherMobile_et;
     @Bind(R.id.submit)
     Button submit;
+    @Bind(R.id.km)
+    Spinner km;
     private int teacherid;
+    private List<String> list = new ArrayList<>();
     private MessageCenter messageCenter;
     private Observer<String> observer = new Observer<String>() {
         @Override
@@ -54,7 +69,6 @@ public class AddTeacher extends Activity implements MessageCallBack {
             JSONObject cmd = JSONUtils.StringToJSON(s);
             if (JSONUtils.getString(cmd, "cmd").equals("teacher.addInfo")) {
                 if (JSONUtils.getInt(cmd, "code", 0) == 1) {
-                    SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "lesson", lesson_et.getText().toString()); //登錄手機
                     finish();
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
                 } else {
@@ -62,10 +76,16 @@ public class AddTeacher extends Activity implements MessageCallBack {
                 }
             }
             if (JSONUtils.getString(cmd, "cmd").equals("teacher.getinfo")) {
+
                 if (JSONUtils.getInt(cmd, "code", 0) == 1) {
                     JSONObject object = JSONUtils.getSingleJSON(cmd, "data", 0);
                     teacherName_et.setText(JSONUtils.getString(object, "teachername"));
-                    lesson_et.setText(JSONUtils.getString(object, "lesson"));
+                    for (int c = 0; c < list.size(); c++) {
+                        if (list.get(c).equals(JSONUtils.getString(object, "lesson"))) {
+                            km.setSelection(c);
+                        }
+                    }
+
                     teacherMobile_et.setText(JSONUtils.getString(object, "mobile"));
                 } else {
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
@@ -74,14 +94,34 @@ public class AddTeacher extends Activity implements MessageCallBack {
             }
             if (JSONUtils.getString(cmd, "cmd").equals("teacher.updateInfo")) {
                 if (JSONUtils.getInt(cmd, "code", 0) == 1) {
-                    SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "lesson", lesson_et.getText().toString()); //登錄手機
+
+                    //如果修改的信息是自己
+                    if (String.valueOf(teacherid).equals(SharedPrefsUtil.getValue(AddTeacher.this, "teacherXML", "teacherid", ""))) {
+                        SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "lesson", km.getSelectedItem().toString()); //课程
+                        SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "teachername",  teacherName_et.getText().toString()); //课程
+
+                    }
                     finish();
 
-                    Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
+                }
+                Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
+            }
+            if (JSONUtils.getString(cmd, "cmd").equals("code.getcodelist")) {
+                if (JSONUtils.getInt(cmd, "code", 0) == 1) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<CodeDic>() {
+                    }.getType();
+                    CodeDic codeDic = gson.fromJson(String.valueOf(cmd), type);
+                    list.clear();
+                    for (int i = 0; i < codeDic.getData().size(); i++)
+                        list.add(codeDic.getData().get(i).getMc());
+                    adapter.notifyDataSetChanged();
+
                 } else {
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
                 }
-
+                if (teacherid > 0)
+                    messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_getinfo(teacherid), AddTeacher.this);
             }
 
         }
@@ -93,13 +133,11 @@ public class AddTeacher extends Activity implements MessageCallBack {
         setContentView(R.layout.ui_center_activity_add_teacher);
         ButterKnife.bind(this);
         messageCenter = new MessageCenter();
-        messageCenter.setCallBackInterFace(this);
-
+        messageCenter.SendYouMessage(messageCenter.ChooseCommand().code_getcodelist("任课"), AddTeacher.this);
         teacherid = getIntent().getIntExtra("teacherid", 0);
         toolbarTitle.setText("新增老师");
         if (teacherid > 0) {
             toolbarTitle.setText("修改老师信息");
-            messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_getinfo(teacherid));
             submit.setText("修改");
         } else {
 
@@ -110,7 +148,25 @@ public class AddTeacher extends Activity implements MessageCallBack {
         initView();
     }
 
+    ArrayAdapter adapter;
+
     private void initView() {
+        adapter = new ArrayAdapter(AddTeacher.this, android.R.layout.simple_list_item_1, list);
+        km.setAdapter(adapter);
+
+//        km.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                lesson_et.setText(list.get(i));
+////                km.setSelection(0);
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,17 +177,18 @@ public class AddTeacher extends Activity implements MessageCallBack {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (teacherid > 0) {
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_updateInfo(teacherid,
                             teacherName_et.getText().toString(),
                             teacherMobile_et.getText().toString(),
-                            lesson_et.getText().toString()));
+                            km.getSelectedItem().toString()), AddTeacher.this);
                 } else {
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_addInfo(
                             "",
                             teacherName_et.getText().toString(),
                             teacherMobile_et.getText().toString(),
-                            lesson_et.getText().toString()));
+                            km.getSelectedItem().toString()), AddTeacher.this);
                 }
             }
         });

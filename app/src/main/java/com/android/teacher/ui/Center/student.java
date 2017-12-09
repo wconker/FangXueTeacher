@@ -185,8 +185,11 @@ public class student extends Fragment implements MessageCallBack {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e("student", "");
                 messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
+                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
+                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
+                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
+
             }
         });
         return v;
@@ -230,6 +233,7 @@ public class student extends Fragment implements MessageCallBack {
             observer.onNext(value);
         } else {
             messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), this);
+
         }
     }
 

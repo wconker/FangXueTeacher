@@ -78,7 +78,7 @@ public class MessageCenter {
 
     public void setCallBackInterFace(MessageCallBack messageCenter) {
         setHttpCallBack(messageCenter);
-        Log.e("setCallBackInterFace", messageCenter.getClass().getName());
+
     }
 
     public void SendYouMessage(String str, MessageCallBack messageCallBack) {

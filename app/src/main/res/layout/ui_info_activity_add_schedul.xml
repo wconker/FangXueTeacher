@@ -43,7 +43,7 @@
             android:clickable="true"
             android:inputType="number"
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 
@@ -86,7 +86,7 @@
             android:clickable="true"
 
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 
@@ -130,7 +130,7 @@
             android:clickable="true"
 
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 
@@ -175,7 +175,7 @@
             android:clickable="true"
 
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="18dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
 
@@ -216,12 +216,66 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:clickable="true"
-            android:inputType="number"
+
+            android:paddingBottom="8dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="0dp"
+            android:paddingTop="8dp" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:background="@color/gray" />
+
+    <LinearLayout
+
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:gravity="left"
+            android:text="任课老师"
+
+            android:typeface="monospace" />
+
+
+        <Spinner
+            android:id="@+id/teacher_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:clickable="true"
+            android:paddingBottom="8dp"
+            android:paddingRight="0dp"
+            android:paddingTop="8dp"></Spinner>
+
+        <EditText
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:focusable="false"
             android:paddingBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="0dp"
             android:paddingTop="8dp" />
-
 
     </LinearLayout>
 

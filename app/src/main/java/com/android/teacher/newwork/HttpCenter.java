@@ -15,7 +15,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,8 +51,8 @@ public class HttpCenter {
     public static ServiceMessage serviceMessage;
     public static String TempStringMessage = "";
     public int Channel = 0;
+    public static int FistLogin = 0;
     public static Context context;
-
     private static int ifErrorDisConnect = 0;
     private CommandCenter commandCenter = new CommandCenter();
     ExecutorService mExecutor = Executors.newFixedThreadPool(8);
@@ -78,24 +81,51 @@ public class HttpCenter {
         serviceMessage = rserviceMessage;
     }
 
+    private long prelongTim = 0;//定义上一次单击的时间
+
+    private long curTime = 1;
+
+    //发送websocket请求到服务端
     void send(final String str) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (HttpCenter.webSocket != null) {
+                    curTime = (new Date()).getTime();//本地单击的时间
+
+                    if ((curTime - prelongTim) < 2000) {
+                        try {
+                            Thread.sleep(1000);
+                            DealRun(str);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        DealRun(str);
+                    }
+                }
+
+            }
+        }).start();
+
+
+    }
+
+    private void DealRun(final String str) {
         final String m = str;
         Runnable runnable;
         runnable = new Runnable() {
             @Override
             public void run() {
 
-                Log.e("Android发送了", str + "");
-//                try {
-//                    //避免 active 的情况
-//                    Thread.sleep(600);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
                 try {
+
                     if (HttpCenter.webSocket != null) {
+                        Log.e("Android发送了", str + "==" + (curTime - prelongTim));
                         HttpCenter.webSocket.sendMessage(RequestBody.create(TEXT, m));
                     }
+                    prelongTim = curTime;//当前单击事件变为上次时间
                 } catch (IOException e) {
                     HttpCenter.webSocket = null;
                     // initWebsocket();
@@ -104,6 +134,7 @@ public class HttpCenter {
                 }
             }
         };
+
         mExecutor.execute(runnable);
     }
 
@@ -151,17 +182,14 @@ public class HttpCenter {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 String Data = response.body().string();
                 JSONObject obj;
-
                 try {
                     obj = new JSONObject(Data);
                     String cmd = JSONUtils.getString(obj, "cmd");
                     if (messageCallBack != null) {
                         messageCallBack.onMessage(Data);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -176,6 +204,7 @@ public class HttpCenter {
         if (JSONUtils.getString(cmd, "cmd").equals("system.login")) {
             RunHeart();
             //模拟选择班级，当重新登录成功以后从本地获取到classid
+
             if (JSONUtils.getInt(cmd, "code", -1) == 1) {
                 String classid = SharedPrefsUtil.getValue(context, "teacherXML", "classid", "");
                 if (!classid.isEmpty()) {
@@ -183,7 +212,8 @@ public class HttpCenter {
                     send(StrWeb);
                 }
             } else if (JSONUtils.getInt(cmd, "code", -1) == -1) {
-                Log.e("登录失败", "登录失败");
+
+
 //                try {
 //                    String Phone = SharedPrefsUtil.getValue(context, "teacherXML", "username", "");
 //                    if (!Phone.isEmpty()) {
@@ -201,6 +231,18 @@ public class HttpCenter {
 //
             }
 
+        } else {
+            Log.e("登录失败", "登录失败" + JSONUtils.getString(cmd, "message"));
+            if (JSONUtils.getString(cmd, "message").equals("账号未登录")) {
+
+                String Phone = SharedPrefsUtil.getValue(context, "teacherXML", "username", "");
+                String reConnectStr = commandCenter.login(Phone,
+                        "",
+                        SharedPrefsUtil.getValue(context, "teacherXML", "MathineCode", ""),
+                        "T");
+                Log.e("重连的登录", reConnectStr + "手机号码" + Phone);
+                send(reConnectStr);
+            }
         }
     }
 
@@ -214,7 +256,7 @@ public class HttpCenter {
                         SharedPrefsUtil.getValue(context, "teacherXML", "MathineCode", ""),
                         "T");
                 Log.e("重连的登录", reConnectStr + "手机号码" + Phone);
-                HttpCenter.webSocket.sendMessage(RequestBody.create(TEXT, reConnectStr));
+                send(reConnectStr);
 
             }
         } else if (Channel == 100) {
@@ -241,8 +283,6 @@ public class HttpCenter {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }
             });
@@ -267,11 +307,9 @@ public class HttpCenter {
                 }
                 //检查断开前是否有需要发送的数据
                 if (!TempStringMessage.isEmpty()) {
-                    try {
-                        HttpCenter.webSocket.sendMessage(RequestBody.create(TEXT, TempStringMessage));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+                    send(TempStringMessage);
+
                     TempStringMessage = "";
                 }
 
@@ -288,7 +326,7 @@ public class HttpCenter {
             public void onMessage(ResponseBody message) throws IOException {
                 String msg = message.string();
 
-                Log.w("warm", msg);
+                Log.w("服务器收到了", msg);
                 if (serviceMessage != null) {
                     serviceMessage.onServiceMessage(msg);
                 }

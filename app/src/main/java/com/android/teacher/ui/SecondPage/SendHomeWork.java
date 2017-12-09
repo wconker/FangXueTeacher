@@ -1,7 +1,11 @@
 package com.android.teacher.ui.SecondPage;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -20,6 +24,7 @@ import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.Toast;
 import com.android.teacher.utils.photoPickerUtil.Photo;
 import com.android.teacher.widget.CircleProgressView;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONObject;
@@ -35,6 +40,7 @@ import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import rx.Observer;
+import rx.functions.Action1;
 
 public class SendHomeWork extends BaseActivity implements MessageCallBack {
 
@@ -55,7 +61,7 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
     EditText title;
     @Bind(R.id.content)
     EditText content;
-
+    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 130;
 
     private int RequestType = 0;
     private ArrayList<String> selectedPhotos;
@@ -73,6 +79,7 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
         super.onResume();
         messageCenter = new MessageCenter();
         messageCenter.setCallBackInterFace(this);
+
     }
 
     @Override
@@ -84,7 +91,6 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
     protected void initViews(Bundle savedInstanceState) {
         rightBtn.setText("提交");
         rightBtn.setVisibility(View.VISIBLE);
-
         photo.setActivity(this);
         RequestType = getIntent().getIntExtra("ConkerData", 0);
         if (RequestType == 2) {
@@ -112,7 +118,6 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
                 });
                 break;
             case R.id.rightBtn:
-
                 if (RequestType > 0) {
                     if (title.getText().toString().isEmpty()) {
                         Toast.FangXueToast(this, "输入标题，更规范哦");
@@ -125,7 +130,7 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
                         showProgress(1);
                     }
                 }
-                Log.e("Conker", "" + RequestType);
+
                 break;
         }
     }
@@ -141,9 +146,28 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                } else {
+
+                    Toast.FangXueToast(this, "请先设置权限");
+                    finish();
+                }
+                return;
+            }
+        }
+    }
+
+
+    @Override
     public void onBackPressed() {
-
-
         Dialog.showDialog(this, "提示", "是否确定退出？", new mClickInterface() {
             @Override
             public void doClick() {
@@ -155,8 +179,6 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
 
             }
         });
-
-
     }
 
     private void showProgress(int pr) {
@@ -188,7 +210,7 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
 
             @Override
             public void onNext(String s) {
-                Log.e("SendHomeWork", s);
+
                 JSONObject cmd = JSONUtils.StringToJSON(s);
                 if (JSONUtils.getString(cmd, "cmd").equals("message.addinfo")) {
                     if (JSONUtils.getString(cmd, "code").equals("1")) {

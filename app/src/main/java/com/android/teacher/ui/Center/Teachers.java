@@ -94,7 +94,6 @@ public class Teachers extends Activity implements MessageCallBack {
         @Override
         public void onNext(String s) {
 
-            Log.e("老师维护", s);
             refreshLayout.setRefreshing(false);
             Gson gson = new Gson();
             JSONObject cmd = JSONUtils.StringToJSON(s);

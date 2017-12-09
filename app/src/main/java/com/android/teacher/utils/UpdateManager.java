@@ -92,7 +92,6 @@ public class UpdateManager {
                 "version",
                 "1"));
 
-        Log.e("我是坂本", ServiceVserson +","+ConverIntByVersionName);
         if (ServiceVserson > ConverIntByVersionName) {
             if (builder_showUpdate == null) {
                 builder_showUpdate = new Builder(mContext);
@@ -112,7 +111,6 @@ public class UpdateManager {
                         dialog.dismiss();
                     }
                 });
-                Log.e("Conker---", builder_showUpdate + "==");
 
                 noticeDialog = builder_showUpdate.create();
                 noticeDialog.show();

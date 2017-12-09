@@ -1,6 +1,7 @@
 package com.android.teacher.ui.Center;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import com.android.teacher.ui.Info.AddTeacher;
 import com.android.teacher.ui.Info.StudentInfo;
 import com.android.teacher.ui.Info.SwitchClass;
 import com.android.teacher.ui.Schdule.SchduleList;
+import com.android.teacher.ui.auth.BindRegisterInfo;
 import com.android.teacher.ui.auth.GetPhoneForRegister;
 import com.android.teacher.utils.JSONUtils;
 import com.android.teacher.utils.SharedPrefsUtil;
@@ -37,6 +39,7 @@ import com.foamtrace.photopicker.ImageConfig;
 import com.foamtrace.photopicker.PhotoPickerActivity;
 import com.foamtrace.photopicker.SelectModel;
 import com.foamtrace.photopicker.intent.PhotoPickerIntent;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.json.JSONObject;
 
@@ -51,6 +54,7 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,8 +77,14 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     TextView className;
     @Bind(R.id.schoolName)
     TextView schoolName;
+    @Bind(R.id.currentversion)
+    TextView currentversion;
     @Bind(R.id.loginOut)
     LinearLayout loginOut;
+    @Bind(R.id.classlist)
+    LinearLayout classlist;
+    @Bind(R.id.rolyBox)
+    LinearLayout rolyBox;
     @Bind(R.id.schedul)
     LinearLayout schedul;
     @Bind(R.id.teacherlist)
@@ -111,7 +121,7 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
                     map.put("token", Token);
                     HttpCenter.send(new File(prepareImg), map);
                 }
-                Toast.FangXueToast(getActivity(), JSONUtils.getString(cmd, "message"));
+                Toast.FangXueToast(getActivity(), "正在上传。。。");
             }
             if (JSONUtils.getString(cmd, "cmd").equals("upload")) {
                 if (JSONUtils.getInt(cmd, "code", 0) == 1) {
@@ -139,13 +149,11 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("mine的", "onResume: " );
+        Log.e("mine的", "onResume: ");
         refreshData();
     }
 
-
-    void refreshData()
-    {
+    void refreshData() {
 
         if (((ActivityCenter) getActivity()).CurrentPos == 3) {
             messageCenter.setCallBackInterFace(this);
@@ -171,9 +179,22 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
                         startActivity(new Intent(getActivity(), SchduleList.class));
                     }
                 });
+                classlist.setVisibility(View.VISIBLE);
+                classlist.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent it = new Intent(getActivity(), BindRegisterInfo.class);
+                        it.putExtra("classid", SharedPrefsUtil.getValue(getActivity(), "teacherXML", "teacherid", "null"));
+                        startActivity(it);
+                    }
+                });
+
+                rolyBox.setVisibility(View.VISIBLE);
             } else {
                 schedul.setVisibility(View.GONE);
                 teacherlist.setVisibility(View.GONE);
+                classlist.setVisibility(View.GONE);
+                rolyBox.setVisibility(View.GONE);
             }
 
             if (!SharedPrefsUtil.getValue(getActivity(), "teacherXML", "headerimg", "").equals("null") && !SharedPrefsUtil.getValue(getActivity(), "teacherXML", "headerimg", "").isEmpty()) {
@@ -181,6 +202,9 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
             } else {
                 Glide.with(getActivity()).load(R.drawable.username).into(tx);
             }
+
+            currentversion.setText(SharedPrefsUtil.getValue(getActivity(), "teacherXML", "version", "维护中"));
+
 
         }
 
@@ -219,6 +243,13 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
                 startActivity(new Intent(getActivity(), AboutUs.class));
             }
         });
+
+        classlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), SwitchClass.class));
+            }
+        });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -226,13 +257,17 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
                 refreshLayout.setRefreshing(false);
             }
         });
-        class_l.setOnClickListener(new View.OnClickListener() {
+
+        name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Go = new Intent(getActivity(), SwitchClass.class);
+                Intent Go = new Intent(getActivity(), AddTeacher.class);
+                int tid = Integer.valueOf(SharedPrefsUtil.getValue(getActivity(), "teacherXML", "teacherid", "0"));
+                Go.putExtra("teacherid", tid);
                 startActivity(Go);
             }
         });
+
         ku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,16 +280,22 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
         tx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageConfig config = new ImageConfig();
-                config.minHeight = 400;
-                config.minWidth = 400;
-                config.mimeType = new String[]{"image/jpeg", "image/png"}; // 图片类型 image/gif ...
-                config.minSize = 1 * 1024 * 1024; // 1Mb 图片大小
-                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
-                intent.setSelectModel(SelectModel.SINGLE);
-                intent.setShowCarema(true); // 是否显示拍照， 默认false
-                // intent.setImageConfig(config);
-                startActivityForResult(intent, 120);
+
+                RxPermissions.getInstance(getActivity())
+                        .request(Manifest.permission.CAMERA)//这里填写所需要的权限
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                if (aBoolean) {//true表示获取权限成功（注意这里在android6.0以下默认为true）
+                                    ChooseImage();
+                                } else {
+                                    Toast.FangXueToast(getActivity(), "请先允许访问您的摄像头及相册！");
+
+                                }
+                            }
+                        });
+
+
             }
         });
 
@@ -266,6 +307,21 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
         });
 
         return rootView;
+    }
+
+    private void ChooseImage() {
+
+
+        ImageConfig config = new ImageConfig();
+        config.minHeight = 400;
+        config.minWidth = 400;
+        config.mimeType = new String[]{"image/jpeg", "image/png"}; // 图片类型 image/gif ...
+        config.minSize = 1 * 1024 * 1024; // 1Mb 图片大小
+        PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+        intent.setSelectModel(SelectModel.SINGLE);
+        intent.setShowCarema(true); // 是否显示拍照， 默认false
+        // intent.setImageConfig(config);
+        startActivityForResult(intent, 120);
     }
 
 
@@ -306,10 +362,7 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     private void refreshAdpater(ArrayList<String> paths) {
         messageCenter.setCallBackInterFace(this);
         messageCenter.SendYouMessage(messageCenter.ChooseCommand().system_token(SharedPrefsUtil.getValue(getActivity(), "teacherXML", "teacherid", "")));
-
         prepareImg = paths.get(0);
-
-
     }
 
     @Override
@@ -321,7 +374,7 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
 
     @Override
     public void onMessage(String str) {
-        Log.e("个人设置中心", str);
+
         Observable.just(str)
                 .observeOn(AndroidSchedulers
                         .mainThread())

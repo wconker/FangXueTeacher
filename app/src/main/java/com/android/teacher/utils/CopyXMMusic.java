@@ -30,7 +30,7 @@ public class CopyXMMusic extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 
-        Log.e("Conker", "onLayout");
+
 
     }
 

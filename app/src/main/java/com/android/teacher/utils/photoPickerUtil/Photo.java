@@ -1,5 +1,6 @@
 package com.android.teacher.utils.photoPickerUtil;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +13,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 
-
 import com.android.teacher.R;
+import com.android.teacher.ui.SecondPage.SendHomeWork;
+import com.android.teacher.utils.Toast;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import rx.functions.Action1;
 
 /**
  * Created by kanghui on 2017/3/17.
@@ -33,9 +37,7 @@ public class Photo extends LinearLayout {
     private Activity activity;
 
 
-
     public boolean IfDele = false;
-
 
 
     public Photo(Context context) {
@@ -106,23 +108,36 @@ public class Photo extends LinearLayout {
         recyclerView.setAdapter(photoAdapter);
         photoAdapter.setClick(new PhotoAdapter.ClickOnList() {
             @Override
-            public void Box(int pos) {
+            public void Box(final int pos) {
 
 
+                RxPermissions.getInstance(activity)
+                        .request(Manifest.permission.CAMERA)//这里填写所需要的权限
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                if (aBoolean) {//true表示获取权限成功（注意这里在android6.0以下默认为true）
+                                    if (photoAdapter.getItemViewType(pos) == PhotoAdapter.TYPE_ADD) {
+                                        PhotoPicker.builder()
+                                                .setPhotoCount(PhotoAdapter.MAX)
+                                                .setShowCamera(true)
+                                                .setPreviewEnabled(false)
+                                                .setSelected(selectedPhotos)
+                                                .start(activity);
+                                    } else {
+                                        PhotoPreview.builder()
+                                                .setPhotos(selectedPhotos)
+                                                .setCurrentItem(pos)
+                                                .start(activity);
+                                    }
+                                } else {
+                                    Toast.FangXueToast(activity, "请先允许访问您的摄像头及相册！");
 
-                if (photoAdapter.getItemViewType(pos) == PhotoAdapter.TYPE_ADD) {
-                    PhotoPicker.builder()
-                            .setPhotoCount(PhotoAdapter.MAX)
-                            .setShowCamera(true)
-                            .setPreviewEnabled(false)
-                            .setSelected(selectedPhotos)
-                            .start(activity);
-                } else {
-                    PhotoPreview.builder()
-                            .setPhotos(selectedPhotos)
-                            .setCurrentItem(pos)
-                            .start(activity);
-                }
+                                }
+                            }
+                        });
+
+
             }
 
             @Override

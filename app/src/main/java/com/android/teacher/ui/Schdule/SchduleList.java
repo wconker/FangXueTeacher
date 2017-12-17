@@ -222,7 +222,6 @@ public class SchduleList extends BaseActivity implements MessageCallBack {
                     Intent i = new Intent(SchduleList.this, AddSchedul.class);
                     i.putExtra("id", pos);
                     i.putExtra("teacherid", teacherId);
-
                     startActivity(i);
                 }
 

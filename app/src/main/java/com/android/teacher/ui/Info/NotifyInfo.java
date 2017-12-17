@@ -61,12 +61,19 @@ public class NotifyInfo extends BaseActivity implements MessageCallBack {
     TextView message_content;
     @Bind(R.id.homework_teachername)
     TextView homework_teachername;
+
     @Bind(R.id.icon_font)
     CircleImageView icon_font;
     @Bind(R.id.photo)
     PhotoT photo;
     @Bind(R.id.reviewList)
     RecyclerView reviewList;
+    @Bind(R.id.readNum_tv)
+    TextView num;
+    @Bind(R.id.t1)
+    LinearLayout t1;
+
+
     private NotifyAdapater adapater;
     List<String> list = new ArrayList<>();
     Context contex = this;
@@ -132,6 +139,7 @@ public class NotifyInfo extends BaseActivity implements MessageCallBack {
         list.add("其他");
     }
 
+
     private void DealWithData(String s) {
         JSONObject cmd = JSONUtils.StringToJSON(s);
 
@@ -153,8 +161,7 @@ public class NotifyInfo extends BaseActivity implements MessageCallBack {
         photo.setActivity(this);
         message_content.setText(dataBean.getWorkcontent());
         hoemwork_date.setText(dataBean.getReleasetime());
-
-
+        num.setText(dataBean.getTotal() + "");
         for (int i = 0; i < dataBean.getPic().size(); i++) {
             preview.add(dataBean.getPic().get(i).getPicpath());
             imgc.add(dataBean.getPic().get(i).getThumbnail());
@@ -169,11 +176,16 @@ public class NotifyInfo extends BaseActivity implements MessageCallBack {
         }
     }
 
-    @OnClick({R.id.back_btn})
+    @OnClick({R.id.back_btn, R.id.t1})
     void Onclick(View v) {
         switch (v.getId()) {
             case R.id.back_btn:
                 this.finish();
+                break;
+            case R.id.t1:
+                Intent info = new Intent(NotifyInfo.this, ReadInfo.class);
+                info.putExtra("id",notifyId);
+                startActivity(info);
                 break;
         }
     }

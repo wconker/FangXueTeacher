@@ -131,8 +131,6 @@ public class SwitchClassFirst extends BaseActivity implements MessageCallBack {
                     adapter.notifyDataSetChanged();
                 }
                 if (JSONUtils.getString(cmd, "cmd").equals("teacher.selectClass")) {
-
-
                     JSONObject arr = JSONUtils.getSingleJSON(cmd, "data", 0);
                     SharedPrefsUtil.putValue(SwitchClassFirst.this, "teacherXML", "schoolname", JSONUtils.getString(arr, "schoolname")); //学校名称
                     SharedPrefsUtil.putValue(SwitchClassFirst.this, "teacherXML", "classname", JSONUtils.getString(arr, "classname")); //登錄手機
@@ -145,8 +143,6 @@ public class SwitchClassFirst extends BaseActivity implements MessageCallBack {
                     Toast.FangXueToast(SwitchClassFirst.this, JSONUtils.getString(cmd, "message"));
                 }
                 if (JSONUtils.getString(cmd, "cmd").equals("class.deleteInfo")) {
-
-
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_GetClassList());
                     Toast.FangXueToast(SwitchClassFirst.this, JSONUtils.getString(cmd, "message"));
                 }
@@ -157,10 +153,14 @@ public class SwitchClassFirst extends BaseActivity implements MessageCallBack {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        return;
+    }
+
+    @Override
     public void onMessage(String str) {
         DealMessageForMe(str, observer);
-
-
     }
 
     class SwitchClassAsAdatper extends CommonAdapter<String> {

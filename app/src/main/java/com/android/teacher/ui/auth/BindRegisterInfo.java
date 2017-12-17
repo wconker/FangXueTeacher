@@ -45,7 +45,6 @@ import rx.Observer;
 
 public class BindRegisterInfo extends BaseActivity implements MessageCallBack {
 
-
     @Bind(R.id.schoolBox)
     LinearLayout schoolBox;
     @Bind(R.id.schoolList)

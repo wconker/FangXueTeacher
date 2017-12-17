@@ -148,6 +148,48 @@
         android:layout_marginLeft="15dp"
         android:background="@color/gray" />
 
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:gravity="left"
+            android:text="QQ"
+            android:typeface="monospace" />
+
+        <EditText
+            android:id="@+id/QQ_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="true"
+            android:inputType="number"
+            android:paddingBottom="8dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="0dp"
+            android:paddingTop="8dp" />
+
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:background="@color/gray" />
 
     <Button
         android:id="@+id/submit"

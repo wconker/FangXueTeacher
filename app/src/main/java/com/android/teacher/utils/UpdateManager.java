@@ -121,11 +121,9 @@ public class UpdateManager {
     private void showDownloadDialog() {
         Builder builder = new Builder(mContext);
         builder.setTitle("软件版本更新");
-
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.progress, null);
         mProgress = (ProgressBar) v.findViewById(R.id.progress);
-
         builder.setView(v);
         builder.setNegativeButton("取消", new OnClickListener() {
             @Override

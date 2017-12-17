@@ -9,14 +9,16 @@ import android.view.View;
 
 
 public abstract class BaseHolder<T> extends RecyclerView.ViewHolder {
+
     public BaseHolder(View itemView) {
         super(itemView);
     }
 
     public abstract void getData(T d);
 
-    public int getPost(int Pos){
-
+    public int getPost(int Pos) {
         return Pos;
-    };
+    }
+
+
 }

@@ -88,28 +88,28 @@ public class HttpCenter {
     //发送websocket请求到服务端
     void send(final String str) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (HttpCenter.webSocket != null) {
-                    curTime = (new Date()).getTime();//本地单击的时间
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (HttpCenter.webSocket != null) {
+//                    curTime = (new Date()).getTime();//本地单击的时间
+//
+//                    if ((curTime - prelongTim) < 2000) {
+//                        try {
+//                            Thread.sleep(1000);
+//                            DealRun(str);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    } else {
+//
+//                    }
+//                }
+//
+//            }
+//        }).start();
 
-                    if ((curTime - prelongTim) < 2000) {
-                        try {
-                            Thread.sleep(1000);
-                            DealRun(str);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }else {
-                        DealRun(str);
-                    }
-                }
-
-            }
-        }).start();
-
-
+        DealRun(str);
     }
 
     private void DealRun(final String str) {
@@ -120,18 +120,23 @@ public class HttpCenter {
             public void run() {
 
                 try {
+                    try {
 
-                    if (HttpCenter.webSocket != null) {
-                        Log.e("Android发送了", str + "==" + (curTime - prelongTim));
-                        HttpCenter.webSocket.sendMessage(RequestBody.create(TEXT, m));
+                        if (HttpCenter.webSocket != null) {
+                            Log.e("Android发送了", str + "时间:" + (curTime - prelongTim));
+                            HttpCenter.webSocket.sendMessage(RequestBody.create(TEXT, m));
+                        }
+                        prelongTim = curTime;//当前单击事件变为上次时间
+                    } catch (IOException e) {
+                        HttpCenter.webSocket = null;
+                        // initWebsocket();
+                        TempStringMessage = m;
+                        Log.e("Conker", "发送异常报出的问题" + e.getMessage() + "websocket为 ：" + HttpCenter.webSocket);
                     }
-                    prelongTim = curTime;//当前单击事件变为上次时间
-                } catch (IOException e) {
-                    HttpCenter.webSocket = null;
-                    // initWebsocket();
-                    TempStringMessage = m;
-                    Log.e("Conker", "发送异常报出的问题" + e.getMessage() + "websocket为 ：" + HttpCenter.webSocket);
+                } catch (Exception ex) {
+                    Log.e("webscoket 出现问题", ex.getMessage());
                 }
+
             }
         };
 
@@ -326,12 +331,16 @@ public class HttpCenter {
             public void onMessage(ResponseBody message) throws IOException {
                 String msg = message.string();
 
+
+                JSONObject cmd = JSONUtils.StringToJSON(msg);
+
+
                 Log.w("服务器收到了", msg);
                 if (serviceMessage != null) {
                     serviceMessage.onServiceMessage(msg);
                 }
                 if (messageCallBack != null) {
-                    JSONObject cmd = JSONUtils.StringToJSON(msg);
+
                     //fileUtil.writeTxtToFile(getCurrentTime() + msg + "\r\n"); //log 记录
                     messageCallBack.onMessage(msg);
                     ResonseReconnect(msg);

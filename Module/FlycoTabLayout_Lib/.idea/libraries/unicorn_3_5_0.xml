@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="unicorn-3.5.0">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../app/build/intermediates/exploded-aar/com.qiyukf.unicorn/unicorn/3.5.0/res" />
+      <root url="jar://$PROJECT_DIR$/../app/build/intermediates/exploded-aar/com.qiyukf.unicorn/unicorn/3.5.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.qiyukf.unicorn/unicorn/3.5.0/9b6e4377904f2a172be10732e17cd70c8d0eede9/unicorn-3.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -155,10 +155,15 @@
                     </com.android.teacher.utils.photoPickerUtil.PhotoT>
                 </RelativeLayout>
 
+                <View
+                    android:layout_marginTop="7dp"
+                    android:background="@color/gray_trans"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="3dp">
 
                     <LinearLayout
                         android:id="@+id/t1"
@@ -169,10 +174,11 @@
                         <ImageView
                             android:layout_width="10dp"
                             android:layout_height="10dp"
-                            android:layout_gravity="center" />
+                            android:layout_gravity="center"
+                            android:src="@drawable/readcount" />
 
                         <TextView
-                            android:id="@+id/readNum"
+                            android:id="@+id/readNum_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"

@@ -146,8 +146,6 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
         messageCenter = new MessageCenter();
         //初始化缓存对象
         aCache = ACache.get(getActivity());
-
-
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -263,7 +261,7 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
                 Intent inte;
                 inte = new Intent(getActivity(), SendHomeWork.class);
                 inte.putExtra("ConkerData", RequestId);
-                startActivity(inte, activityOptions.toBundle());
+                startActivityForResult(inte,100, activityOptions.toBundle());
                 break;
         }
     }
@@ -281,6 +279,20 @@ public class notifyFragment extends Fragment implements MessageCallBack, mClickI
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode==100)
+        {
+
+        }
+
+
+    }
+
+    //删除部分
     @Override
     public void doClick(final int pos, View vi) {
         switch (vi.getId()) {

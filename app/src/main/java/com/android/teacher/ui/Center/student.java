@@ -186,9 +186,8 @@ public class student extends Fragment implements MessageCallBack {
             @Override
             public void onRefresh() {
                 messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
-                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
-                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
-                messageCenter.SendYouMessage(messageCenter.ChooseCommand().getsutdentlist(), student.this);
+
+
 
             }
         });

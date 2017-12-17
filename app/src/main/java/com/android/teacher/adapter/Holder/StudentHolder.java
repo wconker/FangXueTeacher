@@ -86,12 +86,7 @@ public class StudentHolder extends BaseHolder<StudentBean.DataBean> {
             tName.setVisibility(View.GONE);
             swipeMenuLayout.setSwipeEnable(false);
         } else {
-
-            Log.w("STUDENT", d.getStudentname() + "======>" + tName.getId());
-
             tName.setText(d.getStudentname());
-
-
             Button edit, del;
             edit = v.findViewById(R.id.edit);
             del = v.findViewById(R.id.del);

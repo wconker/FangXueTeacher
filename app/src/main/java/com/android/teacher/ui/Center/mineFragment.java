@@ -2,8 +2,15 @@ package com.android.teacher.ui.Center;
 
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -44,6 +51,9 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +61,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -85,6 +96,8 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     LinearLayout classlist;
     @Bind(R.id.rolyBox)
     LinearLayout rolyBox;
+    @Bind(R.id.share)
+    LinearLayout share;
     @Bind(R.id.schedul)
     LinearLayout schedul;
     @Bind(R.id.teacherlist)
@@ -129,7 +142,10 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
                     String path = JSONUtils.getString(object, "path");
                     Glide.with(getActivity()).load(path).into(tx);
                     SharedPrefsUtil.putValue(getActivity(), "teacherXML", "headerimg", path);
-                    Toast.FangXueToast(getActivity(), path);
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("成功")
+                            .setContentText(JSONUtils.getString(cmd, "message"))
+                            .show();
                 }
             }
         }
@@ -298,6 +314,43 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
 
             }
         });
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1=new Intent(Intent.ACTION_SEND);
+                intent1.putExtra(Intent.EXTRA_TEXT,"放学神器教师版App，精准掌握孩子放学时间【http://fangxue.56pt.cn/fx/app/teacher.apk】");
+                intent1.setType("text/plain");
+                startActivity(Intent.createChooser(intent1,"放学神器教师版"));
+                //图片分享
+
+
+//                Intent intent2 = new Intent(Intent.ACTION_SEND);
+//                Uri uri = Uri.fromFile(new File(path));
+//                intent2.putExtra(Intent.EXTRA_STREAM, uri);
+//                intent2.setType("image/*");
+//                startActivity(Intent.createChooser(intent2, "share"));
+
+
+//
+
+//
+//                Uri uri = Uri.fromFile(new File("/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-12-14-11-14-47.png"));
+//                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                if (uri != null) {
+//                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//                    shareIntent.setType("image/*");
+//                    //当用户选择短信时使用sms_body取得文字
+//                    shareIntent.putExtra("sms_body", "内容");
+//                } else {
+//                    shareIntent.setType("text/plain");
+//                }
+//                shareIntent.putExtra(Intent.EXTRA_TEXT,"内容");
+//                //自定义选择框的标题
+//                startActivity(Intent.createChooser(shareIntent, "邀请好友"));
+                //系统默认标题
+
+            }
+        });
 
         gv.setAdapter(new CommonAdapter<String>(getActivity(), mData, R.layout.common_gv_layout) {
             @Override
@@ -308,6 +361,7 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
 
         return rootView;
     }
+
 
     private void ChooseImage() {
 
@@ -328,8 +382,6 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (data == null) {
             return;
         }

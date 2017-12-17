@@ -48,6 +48,8 @@ public class AddTeacher extends Activity implements MessageCallBack {
     EditText lesson_et;
     @Bind(R.id.teacherMobile_et)
     EditText teacherMobile_et;
+    @Bind(R.id.QQ_et)
+    EditText qq_et;
     @Bind(R.id.submit)
     Button submit;
     @Bind(R.id.km)
@@ -75,17 +77,18 @@ public class AddTeacher extends Activity implements MessageCallBack {
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
                 }
             }
+
             if (JSONUtils.getString(cmd, "cmd").equals("teacher.getinfo")) {
 
                 if (JSONUtils.getInt(cmd, "code", 0) == 1) {
                     JSONObject object = JSONUtils.getSingleJSON(cmd, "data", 0);
                     teacherName_et.setText(JSONUtils.getString(object, "teachername"));
+                    qq_et.setText(JSONUtils.getString(object, "qq"));
                     for (int c = 0; c < list.size(); c++) {
                         if (list.get(c).equals(JSONUtils.getString(object, "lesson"))) {
                             km.setSelection(c);
                         }
                     }
-
                     teacherMobile_et.setText(JSONUtils.getString(object, "mobile"));
                 } else {
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
@@ -98,7 +101,7 @@ public class AddTeacher extends Activity implements MessageCallBack {
                     //如果修改的信息是自己
                     if (String.valueOf(teacherid).equals(SharedPrefsUtil.getValue(AddTeacher.this, "teacherXML", "teacherid", ""))) {
                         SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "lesson", km.getSelectedItem().toString()); //课程
-                        SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "teachername",  teacherName_et.getText().toString()); //课程
+                        SharedPrefsUtil.putValue(AddTeacher.this, "teacherXML", "teachername", teacherName_et.getText().toString()); //课程
 
                     }
                     finish();
@@ -116,7 +119,6 @@ public class AddTeacher extends Activity implements MessageCallBack {
                     for (int i = 0; i < codeDic.getData().size(); i++)
                         list.add(codeDic.getData().get(i).getMc());
                     adapter.notifyDataSetChanged();
-
                 } else {
                     Toast.FangXueToast(AddTeacher.this, JSONUtils.getString(cmd, "message"));
                 }
@@ -182,13 +184,13 @@ public class AddTeacher extends Activity implements MessageCallBack {
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_updateInfo(teacherid,
                             teacherName_et.getText().toString(),
                             teacherMobile_et.getText().toString(),
-                            km.getSelectedItem().toString()), AddTeacher.this);
+                            km.getSelectedItem().toString(), qq_et.getText().toString()), AddTeacher.this);
                 } else {
                     messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_addInfo(
                             "",
                             teacherName_et.getText().toString(),
                             teacherMobile_et.getText().toString(),
-                            km.getSelectedItem().toString()), AddTeacher.this);
+                            km.getSelectedItem().toString(), qq_et.getText().toString()), AddTeacher.this);
                 }
             }
         });

@@ -34,12 +34,17 @@ import com.tencent.bugly.crashreport.CrashReport;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.Observable;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import rx.Observer;
+import rx.Scheduler;
+import rx.observers.Observers;
 
 public class GetPhoneForRegister extends BaseActivity implements MessageCallBack {
 
@@ -125,7 +130,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_DENIED
                 ) {
-                   ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.WAKE_LOCK,
                             Manifest.permission.CALL_PHONE,
@@ -257,10 +262,23 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         demologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                sweetAlertDialog = new SweetAlertDialog(GetPhoneForRegister.this, SweetAlertDialog.PROGRESS_TYPE)
+                        .setTitleText("登录中。。。");
+                sweetAlertDialog.show();
                 messageCenter.SendYouMessage(messageCenter.ChooseCommand().login("13312345678", "0720", MathineCode(), "T"));
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (sweetAlertDialog != null)
+            sweetAlertDialog.dismiss();
+    }
+
+    SweetAlertDialog sweetAlertDialog;
 
     //未登录前先发送无验证码的请求
     private void sendMessToLoginForNoCode() {
@@ -301,7 +319,10 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
 
                 } else {
                     ImageShowAtFirstAll.setVisibility(View.GONE);
-                    Toast.FangXueToast(this, JSONUtils.getString(cmd, "message", ""));
+                    sweetAlertDialog = new SweetAlertDialog(GetPhoneForRegister.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("提示")
+                            .setContentText(JSONUtils.getString(cmd, "message", "") + "!");
+                    sweetAlertDialog.show();
                 }
                 break;
             case "teacher.getClassList":
@@ -324,21 +345,26 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                         startActivity(new Intent(GetPhoneForRegister.this, ActivityCenter.class));
                         ThisFinis();
                     }
-
                 }
                 break;
             case "teacher.selectClass":
-                JSONObject classInfo = JSONUtils.getSingleJSON(cmd, "data", 0);
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "username", JSONUtils.getString(classInfo, "mobile")); //登錄手機
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "schoolname", JSONUtils.getString(classInfo, "schoolname")); //登錄手機
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classname", JSONUtils.getString(classInfo, "classname")); //登錄手機
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", JSONUtils.getString(classInfo, "classid")); //classid
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "lesson", JSONUtils.getString(classInfo, "lesson")); //登錄手機
-
-                SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "roly", JSONUtils.getString(classInfo, "adminflag")); //登錄手機
-                startActivity(new Intent(GetPhoneForRegister.this, ActivityCenter.class));
-                ThisFinis();
-                break;
+                if (JSONUtils.getInt(cmd, "code", -1) == 1) {
+                    JSONObject classInfo = JSONUtils.getSingleJSON(cmd, "data", 0);
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "username", JSONUtils.getString(classInfo, "mobile")); //登錄手機
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "schoolname", JSONUtils.getString(classInfo, "schoolname")); //登錄手機
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classname", JSONUtils.getString(classInfo, "classname")); //登錄手機
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", JSONUtils.getString(classInfo, "classid")); //classid
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "lesson", JSONUtils.getString(classInfo, "lesson")); //登錄手機
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "roly", JSONUtils.getString(classInfo, "adminflag")); //登錄手機
+                    startActivity(new Intent(GetPhoneForRegister.this, ActivityCenter.class));
+                    ThisFinis();
+                    break;
+                } else {
+                    sweetAlertDialog = new SweetAlertDialog(GetPhoneForRegister.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("提示")
+                            .setContentText(JSONUtils.getString(cmd, "message", "") + "!");
+                    sweetAlertDialog.show();
+                }
 
             case "system.regist":
                 if (JSONUtils.getInt(cmd, "code", -1) == 1) { //表示注册成功

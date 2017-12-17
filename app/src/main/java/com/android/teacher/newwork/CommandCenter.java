@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.teacher.BuildConfig;
 import com.android.teacher.entity.SystemRegister;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -665,7 +666,7 @@ public class CommandCenter {
      *
      * @return
      */
-    public String teacher_addInfo(String classid, String teachername, String mobile, String lesson) {
+    public String teacher_addInfo(String classid, String teachername, String mobile, String lesson, String qq) {
         jsonObj = new JSONObject();
         jsonObjArr = new JSONObject();
         //data部分
@@ -673,6 +674,7 @@ public class CommandCenter {
         addData(jsonObj, "teachername", teachername);
         addData(jsonObj, "lesson", lesson);
         addData(jsonObj, "mobile", mobile);
+        addData(jsonObj, "qq", qq);
         //外测json
         addCmd(jsonObjArr, "teacher.addInfo", jsonObj);
         return jsonObjArr.toString();
@@ -746,7 +748,7 @@ public class CommandCenter {
      *
      * @return
      */
-    public String teacher_updateInfo(int teacherid, String teachername, String mobile, String lesson) {
+    public String teacher_updateInfo(int teacherid, String teachername, String mobile, String lesson, String qq) {
         jsonObj = new JSONObject();
         jsonObjArr = new JSONObject();
         //data部分
@@ -754,6 +756,7 @@ public class CommandCenter {
         addData(jsonObj, "teachername", teachername);
         addData(jsonObj, "lesson", lesson);
         addData(jsonObj, "mobile", mobile);
+        addData(jsonObj, "qq", qq);
 
         //外测json
         addCmd(jsonObjArr, "teacher.updateInfo", jsonObj);
@@ -1011,5 +1014,38 @@ public class CommandCenter {
         return jsonObjArr.toString();
     }
 
+    /**
+     * 阅读人员列表
+     *
+     * @return
+     */
+    public String message_readinfo(String id) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+        addData(jsonObj, "id", id);
+
+        //外测json
+        addCmd(jsonObjArr, "message.readinfo", jsonObj);
+        return jsonObjArr.toString();
+    }
+    /**
+     * 信息推送
+     *
+     * @return
+     */
+    public String message_pushnotice(JSONArray parentid, int id) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+
+        addData(jsonObj, "parentid", parentid);
+        addData(jsonObj, "id", id);
+
+
+        //外测json
+        addCmd(jsonObjArr, "message.pushnotice", jsonObj);
+        return jsonObjArr.toString();
+    }
 
 }

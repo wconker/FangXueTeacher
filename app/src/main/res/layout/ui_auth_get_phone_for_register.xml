@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/login_214" />
+                    android:src="@drawable/login_215" />
             </LinearLayout>
 
 
@@ -183,9 +183,9 @@
 
         <ImageView
             android:id="@+id/ImageShowAtFirstAll"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/flash_ff" />
+            android:src="@drawable/guid2" />
     </FrameLayout>
 </LinearLayout>

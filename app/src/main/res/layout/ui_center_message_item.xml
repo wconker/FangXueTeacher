@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:background="@color/white"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <com.mcxtzhang.swipemenulib.SwipeMenuLayout
         android:layout_width="match_parent"
@@ -107,6 +107,13 @@
             android:textColor="@android:color/white" />
 
     </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/gray" />
 
     <TextView
         android:id="@+id/homework_author"

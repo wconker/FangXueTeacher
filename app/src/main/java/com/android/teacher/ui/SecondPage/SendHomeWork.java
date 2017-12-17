@@ -37,6 +37,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import rx.Observer;
@@ -243,6 +244,8 @@ public class SendHomeWork extends BaseActivity implements MessageCallBack {
 
     @Override
     public void onMessage(String str) {
+
+        Log.e("上传信息", str);
         DealMessageForMe(str, observer);
     }
 

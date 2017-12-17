@@ -21,7 +21,7 @@
             <LinearLayout
                 android:id="@+id/boxMain"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="230dp"
                 android:background="@drawable/bgl"
                 android:orientation="vertical">
 
@@ -71,7 +71,7 @@
                 <ImageView
                     android:id="@+id/switchClass"
                     android:layout_width="wrap_content"
-                    android:layout_height="19dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
@@ -128,15 +128,15 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-
                         android:gravity="center"
                         android:id="@+id/button2"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="60dp"
                         android:src="@drawable/icon1" />
 
                     <TextView
-
+                        android:textStyle="bold"
+                        android:textSize="12dp"
                         android:gravity="center"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
@@ -155,12 +155,12 @@
                         android:gravity="center"
                         android:id="@+id/btn_delay"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="60dp"
                         android:src="@drawable/icon2" />
 
                     <TextView
-
-
+                        android:textStyle="bold"
+                        android:textSize="12dp"
                         android:gravity="center"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
@@ -186,6 +186,7 @@
                 android:verticalSpacing="0.0dip">
 
             </GridView>
+
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -3,6 +3,8 @@ package com.android.teacher.ui.Center;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -42,6 +46,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -95,6 +100,16 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
     public void onResume() {
         super.onResume();
 
+        ActivityCenter main = ((ActivityCenter) getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = main.getWindow();
+
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getActivity().getResources().getColor(R.color.green_450));
+        }
+
 
         if (((ActivityCenter) getActivity()).CurrentPos == 0)
             stateSet();
@@ -104,7 +119,7 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
     private void stateSet() {
 
 
-        String titleName = SharedPrefsUtil.getValue(getActivity(), "teacherXML", "schoolname", "") + " "+SharedPrefsUtil.getValue(getActivity(),
+        String titleName = SharedPrefsUtil.getValue(getActivity(), "teacherXML", "schoolname", "") + " " + SharedPrefsUtil.getValue(getActivity(),
                 "teacherXML", "classname", "");
         className.setText(titleName);
         try {
@@ -153,16 +168,53 @@ public class indexFragment extends BaseFragment implements MessageCallBack, Data
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog.showDialog(getActivity(), "提示", "点击按钮后将发送放学信息，是否确定？", new mClickInterface() {
+             /*   Dialog.showDialog(getActivity(), "提示", "点击按钮后将发送放学信息，是否确定？", new mClickInterface() {
                     @Override
                     public void doClick() {
-                        messageCenter.SendYouMessage(messageCenter.ChooseCommand().sendNotify(), indexFragment.this);
+
                     }
 
                     @Override
                     public void doClick(int pos, View vi) {
                     }
                 });
+*/
+
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("确定发送?")
+                        .setContentText("确定将发送放学通知!")
+                        .setCancelText("再等会!")
+                        .setConfirmText("现在放学!")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                // reuse previous dialog instance, keep widget user state, reset them if you need
+                                sDialog.setTitleText("取消!")
+                                        .setContentText("取消成功")
+                                        .setConfirmText("好")
+                                        .showCancelButton(false)
+                                        .setCancelClickListener(null)
+                                        .setConfirmClickListener(null)
+                                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+
+                                messageCenter.SendYouMessage(messageCenter.ChooseCommand().sendNotify(), indexFragment.this);
+                                sDialog.setTitleText("成功!")
+                                        .setContentText("放学通知已发送!")
+                                        .setConfirmText("好")
+                                        .showCancelButton(false)
+                                        .setCancelClickListener(null)
+                                        .setConfirmClickListener(null)
+                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            }
+                        })
+                        .show();
+
 
             }
         });

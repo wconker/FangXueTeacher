@@ -1,6 +1,7 @@
 package com.android.teacher.ui.Center;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -23,8 +24,8 @@ public class ActivityCenter extends BaseActivity {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private String[] mTitles = {"首页", "信息", "学生", "设置"};
-    private int[] iconShow = {R.mipmap.lesson_blue, R.mipmap.message_blue, R.mipmap.student_blue, R.mipmap.set_blue};
-    private int[] iconHide = {R.mipmap.lesson_gray, R.mipmap.message_gray, R.mipmap.student_gray, R.mipmap.set_gray};
+    private int[] iconShow = {R.mipmap.home1, R.mipmap.info1, R.mipmap.cap1, R.mipmap.set1};
+    private int[] iconHide = {R.mipmap.home, R.mipmap.info, R.mipmap.cap, R.mipmap.set};
     protected ACache aCache;
     protected int CurrentPos = 0;
     public CommonTabLayout mTabLayout;
@@ -32,6 +33,11 @@ public class ActivityCenter extends BaseActivity {
     @Override
     public void setButterKnife() {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        //super.onSaveInstanceState(outState, outPersistentState);
     }
 
     void CheckoutVersion() {

@@ -109,10 +109,8 @@ public class AddParent extends Activity implements MessageCallBack {
             submit.setText("修改");
 
         }else {
-
             toolbarTitle.setText("添加家长");
         }
-
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override

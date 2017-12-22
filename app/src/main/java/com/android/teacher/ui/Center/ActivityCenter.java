@@ -18,6 +18,9 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 
+import cn.jiguang.analytics.android.api.CountEvent;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+
 
 public class ActivityCenter extends BaseActivity {
     private View mDecorView;
@@ -50,9 +53,17 @@ public class ActivityCenter extends BaseActivity {
         return;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JAnalyticsInterface.onPageEnd(this,this.getClass().getCanonicalName());
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        JAnalyticsInterface.onPageStart(this,this.getClass().getCanonicalName());
         Log.e("ActivityCenter", "CurrentPos" + CurrentPos);
         if (CurrentPos == 3)
             ((mineFragment) mFragments.get(3)).setCallBackInterFace();

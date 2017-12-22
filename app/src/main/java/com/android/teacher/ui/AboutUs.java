@@ -39,7 +39,5 @@ public class AboutUs extends Activity {
         web.getSettings().setJavaScriptEnabled(true);
         //加载需要显示的网页
         web.loadUrl(url);
-
-
     }
 }

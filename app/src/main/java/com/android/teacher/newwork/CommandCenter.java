@@ -210,13 +210,36 @@ public class CommandCenter {
         addData(jsonObj, "finger", finger);
         addData(jsonObj, "version", BuildConfig.VERSION_NAME);
         addData(jsonObj, "source", "Android");
-        addData(jsonObj, "usertype", userType);//P 是家长，T 是老师
+        addData(jsonObj, "usertype", "T");//P 是家长，T 是老师
         //外测json
         addCmd(jsonObjArr, "system.login", jsonObj);
 
         return jsonObjArr.toString();
     }
 
+    /**
+     * 登录有密码
+     *
+     * @param mobile
+     * @param code
+     * @param userType
+     * @return
+     */
+    public String login(String mobile, String password, String code, String finger, String userType) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+        addData(jsonObj, "mobile", mobile);
+        addData(jsonObj, "code", code);
+        addData(jsonObj, "finger", finger);
+        addData(jsonObj, "password", password);
+        addData(jsonObj, "version", BuildConfig.VERSION_NAME);
+        addData(jsonObj, "source", "Android");
+        addData(jsonObj, "usertype", "T");//P 是家长，T 是老师
+        //外测json
+        addCmd(jsonObjArr, "system.login", jsonObj);
+        return jsonObjArr.toString();
+    }
 
     /**
      * 选择学生
@@ -410,7 +433,7 @@ public class CommandCenter {
     }
 
     /**
-     * 新增班级（绑定机器）
+     * 新增班级
      *
      * @return
      */
@@ -1029,6 +1052,7 @@ public class CommandCenter {
         addCmd(jsonObjArr, "message.readinfo", jsonObj);
         return jsonObjArr.toString();
     }
+
     /**
      * 信息推送
      *
@@ -1047,5 +1071,58 @@ public class CommandCenter {
         addCmd(jsonObjArr, "message.pushnotice", jsonObj);
         return jsonObjArr.toString();
     }
+
+    /**
+     * 修改密码
+     *
+     * @return
+     */
+    public String system_modifypassword(String password, String code) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+
+        addData(jsonObj, "password", password);
+        addData(jsonObj, "code", code);
+        //外测json
+        addCmd(jsonObjArr, "system.modifypassword", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+    /**
+     * 评论
+     *
+     * @return
+     */
+    public String message_addComment(int messageid, String commentContent) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+
+        addData(jsonObj, "messageid", messageid);
+        addData(jsonObj, "commentContent", commentContent);
+        //外测json
+        addCmd(jsonObjArr, "message.addComment", jsonObj);
+        return jsonObjArr.toString();
+    }
+
+
+    /**
+     * 写评论
+     *
+     * @return
+     */
+    public String message_getCommentList(int messageid) {
+        jsonObj = new JSONObject();
+        jsonObjArr = new JSONObject();
+        //data部分
+
+        addData(jsonObj, "messageid", messageid);
+
+        //外测json
+        addCmd(jsonObjArr, "message.getCommentList", jsonObj);
+        return jsonObjArr.toString();
+    }
+
 
 }

@@ -28,15 +28,13 @@ public class Reader extends BaseHolder<ReaderBean.DataBean> {
         mContext = context;
 
 
-
-
     }
 
-   public void setListen(mClickInterface clickListener)
-   {
+    public void setListen(mClickInterface clickListener) {
 
-       mClickInterface=clickListener;
-   }
+        mClickInterface = clickListener;
+    }
+
     @Override
     public int getPost(int Pos) {
         this.pos = Pos;
@@ -45,12 +43,10 @@ public class Reader extends BaseHolder<ReaderBean.DataBean> {
 
     @Override
     public void getData(ReaderBean.DataBean d) {
-        CardView cardView = item.findViewById(R.id.cv);
 
         TextView name = item.findViewById(R.id.read_name);
         name.setText(d.getStudentname());
-        if(mClickInterface!=null)
-        {
+        if (mClickInterface != null) {
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,12 +56,12 @@ public class Reader extends BaseHolder<ReaderBean.DataBean> {
         }
 
         if (d.getReadflag() == 0) {
-            name.setTextColor(mContext.getResources().getColor(R.color.black_80));
-            cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.gray));
+            name.setTextColor(mContext.getResources().getColor(R.color.gray_20));
 
-        }else {
-            name.setTextColor(mContext.getResources().getColor(R.color.white));
-            cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.red));
+
+        } else {
+            name.setTextColor(mContext.getResources().getColor(R.color.black_80));
+
         }
 
 

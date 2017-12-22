@@ -71,6 +71,15 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
     LinearLayout layoutRegist;
     @Bind(R.id.ImageShowAtFirstAll)
     ImageView ImageShowAtFirstAll;
+    @Bind(R.id.password)
+    EditText pwd;
+    @Bind(R.id.login_yzcode)
+    Button loginYzcode;
+
+    @Bind(R.id.login_pwd)
+    Button loginPwd;
+
+
     private int timer = 90;
     private Observer<String> observer;
 
@@ -160,7 +169,10 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         switch (v.getId()) {
             case R.id.btn_next:
                 if (toolbarTitle.getText().equals("教师版登录")) {
-                    messageCenter.SendYouMessage(messageCenter.ChooseCommand().login(et_username.getText().toString(), et_password.getText().toString(), MathineCode(), "T"));
+                    messageCenter.SendYouMessage(messageCenter.ChooseCommand().login(et_username.getText().toString(),
+                            pwd.getText().toString(),
+                            et_password.getText().toString(),
+                            MathineCode(), "T"));
 
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "MathineCode", MathineCode()); //机器码
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", "");
@@ -188,6 +200,34 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
     }
 
     void BtnBind() {
+
+        loginYzcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                et_password.setVisibility(View.VISIBLE);
+                pwd.setVisibility(View.GONE);
+                yzCode.setVisibility(View.VISIBLE);
+                et_username.setText("");
+                pwd.setText("");
+
+
+            }
+        });
+
+        loginPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_password.setVisibility(View.GONE);
+                pwd.setVisibility(View.VISIBLE);
+                yzCode.setVisibility(View.GONE);
+                et_username.setText("");
+                et_password.setText("");
+
+            }
+        });
+
+
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -224,7 +264,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         toolbarTitle.setText("教师版登录");
         rightBtn.setVisibility(View.VISIBLE);
         rightBtn.setText("注册");
-        if (SharedPrefsUtil.getValue(this, "loginXML", "username", "").equals("13312345678")) {
+        if (SharedPrefsUtil.getValue(this, "teacherXML", "username", "").equals("13312345678")) {
             SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "classid", "");
         }
         BtnBind();
@@ -286,6 +326,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
         if (!et_username.getText().toString().isEmpty()) {
             messageCenter.SendYouMessage(
                     messageCenter.ChooseCommand().login(et_username.getText().toString(),
+                            pwd.getText().toString(),
                             "",
                             MathineCode(),
                             "T"));
@@ -312,7 +353,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "headerimg", JSONUtils.getString(login, "headerimg")); //头像
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "teacherid", JSONUtils.getString(login, "teacherid")); //老师id
                     SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "version", JSONUtils.getString(login, "version")); //版本信息
-
+                    SharedPrefsUtil.putValue(GetPhoneForRegister.this, "teacherXML", "UserPWD", pwd.getText().toString());
                     if (SharedPrefsUtil.getValue(GetPhoneForRegister.this, "teacherXML", "classid", "").equals("")) {
                         messageCenter.SendYouMessage(messageCenter.ChooseCommand().teacher_GetClassList());
                     }
@@ -330,7 +371,6 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
                 if (JSONUtils.getInt(cmd, "code", -1) == 1) {
 
                     int classid = 0;
-
                     if (JSONUtils.getJSONArray(cmd, "data").length() > 0) { //是否绑定班级,如果绑定了只有一个班级的情况 直接调用选择班级,如果大于1 进入选择班级界面,如果没有班级直接进入首页
                         if (JSONUtils.getJSONArray(cmd, "data").length() == 1) {
                             JSONObject classObj = JSONUtils.getSingleJSON(cmd, "data", 0);
@@ -399,6 +439,7 @@ public class GetPhoneForRegister extends BaseActivity implements MessageCallBack
             et_username.setText(SharedPrefsUtil.getValue(GetPhoneForRegister.this,
                     "teacherXML",
                     "username", ""));
+            pwd.setText(SharedPrefsUtil.getValue(this, "teacherXML", "UserPWD", ""));
             TryToLogin();
         }
     }

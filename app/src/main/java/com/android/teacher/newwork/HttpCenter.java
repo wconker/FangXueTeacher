@@ -209,7 +209,7 @@ public class HttpCenter {
         if (JSONUtils.getString(cmd, "cmd").equals("system.login")) {
             RunHeart();
             //模拟选择班级，当重新登录成功以后从本地获取到classid
-
+            Log.e("班级id", SharedPrefsUtil.getValue(context, "teacherXML", "classid", ""));
             if (JSONUtils.getInt(cmd, "code", -1) == 1) {
                 String classid = SharedPrefsUtil.getValue(context, "teacherXML", "classid", "");
                 if (!classid.isEmpty()) {

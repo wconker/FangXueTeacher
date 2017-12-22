@@ -1,0 +1,50 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+ * Project ShareSDK:/Users/softsea/Desktop/ShareSDK for
+   Android/Libs/MainLibs/.classpath:
+   Could not resolve source path src in project ShareSDK: ignored. The project
+   may not compile if the given source path provided source code.
+
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* build.xml
+* proguard-project.txt
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => ShareSDK/src/main/AndroidManifest.xml
+* libs/MobCommons-2017.1201.1507.jar => ShareSDK/libs/MobCommons-2017.1201.1507.jar
+* libs/MobTools-2017.1201.1507.jar => ShareSDK/libs/MobTools-2017.1201.1507.jar
+* libs/ShareSDK-Core-3.1.2.jar => ShareSDK/libs/ShareSDK-Core-3.1.2.jar
+* libs/ShareSDK-Email-3.1.2.jar => ShareSDK/libs/ShareSDK-Email-3.1.2.jar
+* libs/ShareSDK-Facebook-3.1.2.jar => ShareSDK/libs/ShareSDK-Facebook-3.1.2.jar
+* libs/ShareSDK-QZone-3.1.2.jar => ShareSDK/libs/ShareSDK-QZone-3.1.2.jar
+* libs/ShareSDK-ShortMessage-3.1.2.jar => ShareSDK/libs/ShareSDK-ShortMessage-3.1.2.jar
+* libs/ShareSDK-SinaWeibo-3.1.2.jar => ShareSDK/libs/ShareSDK-SinaWeibo-3.1.2.jar
+* libs/ShareSDK-TencentWeibo-3.1.2.jar => ShareSDK/libs/ShareSDK-TencentWeibo-3.1.2.jar
+* libs/ShareSDK-Twitter-3.1.2.jar => ShareSDK/libs/ShareSDK-Twitter-3.1.2.jar
+* res/ => ShareSDK/src/main/res/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

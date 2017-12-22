@@ -123,6 +123,9 @@
             android:name=".ui.Schdule.SchduleList"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.SecondPage.RePwd"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.Info.AddSchedul"
             android:screenOrientation="portrait" />
         <activity

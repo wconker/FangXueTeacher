@@ -34,6 +34,7 @@ import com.android.teacher.ui.Info.AddTeacher;
 import com.android.teacher.ui.Info.StudentInfo;
 import com.android.teacher.ui.Info.SwitchClass;
 import com.android.teacher.ui.Schdule.SchduleList;
+import com.android.teacher.ui.SecondPage.RePwd;
 import com.android.teacher.ui.auth.BindRegisterInfo;
 import com.android.teacher.ui.auth.GetPhoneForRegister;
 import com.android.teacher.utils.JSONUtils;
@@ -98,6 +99,8 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
     LinearLayout rolyBox;
     @Bind(R.id.share)
     LinearLayout share;
+    @Bind(R.id.setting_repwd)
+    LinearLayout SettingRpwd;
     @Bind(R.id.schedul)
     LinearLayout schedul;
     @Bind(R.id.teacherlist)
@@ -314,13 +317,22 @@ public class mineFragment extends BaseFragment implements MessageCallBack {
 
             }
         });
+
+        SettingRpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Go = new Intent(getActivity(), RePwd.class);
+                startActivity(Go);
+            }
+        });
+
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1=new Intent(Intent.ACTION_SEND);
-                intent1.putExtra(Intent.EXTRA_TEXT,"放学神器教师版App，精准掌握孩子放学时间【http://fangxue.56pt.cn/fx/app/teacher.apk】");
+                Intent intent1 = new Intent(Intent.ACTION_SEND);
+                intent1.putExtra(Intent.EXTRA_TEXT, "放学神器教师版App，精准掌握孩子放学时间【http://fangxue.56pt.cn/fx/app/teacher.apk】");
                 intent1.setType("text/plain");
-                startActivity(Intent.createChooser(intent1,"放学神器教师版"));
+                startActivity(Intent.createChooser(intent1, "放学神器教师版"));
                 //图片分享
 
 

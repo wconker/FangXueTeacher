@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.android.teacher.R;
 import com.android.teacher.base.BaseHolder;
+import com.android.teacher.entity.Comment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.w3c.dom.Text;
@@ -14,7 +15,7 @@ import org.w3c.dom.Text;
  * Created by softsea on 17/11/16.
  */
 
-public class CommadHolder extends BaseHolder<String> {
+public class CommadHolder extends BaseHolder<Comment.DataBean> {
 
 
     private final View item;
@@ -25,9 +26,13 @@ public class CommadHolder extends BaseHolder<String> {
     }
 
     @Override
-    public void getData(String d) {
+    public void getData(Comment.DataBean d) {
+        TextView t_name = item.findViewById(R.id.name);
+        TextView time = item.findViewById(R.id.time);
+        TextView content = item.findViewById(R.id.content);
+        t_name.setText(d.getUsername());
+        time.setText(d.getCommenttime());
+        content.setText(d.getCommentcontent());
 
-        TextView t = item.findViewById(R.id.control2);
-        t.setText(d);
     }
 }

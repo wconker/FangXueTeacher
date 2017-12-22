@@ -63,10 +63,10 @@
 
                                 <TextView
                                     android:id="@+id/name"
-                                    android:gravity="center"
-                                    android:layout_gravity="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
                                     android:text="NicName"
                                     android:textColor="#ffffff"
                                     android:textSize="17dp" />
@@ -229,6 +229,44 @@
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:background="@drawable/trunright" />
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:id="@+id/setting_repwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <ImageView
+
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/repwd" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:text="密码修改"
+                                android:textSize="@dimen/default_medium_text_size" />
+
+                            <TextView
+                                android:id="@+id/rePwd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:background="@drawable/trunright" />
+
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -452,6 +490,7 @@
 
 
                         </LinearLayout>
+
                         <LinearLayout
 
                             android:id="@+id/setting_aboutus"

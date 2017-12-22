@@ -145,9 +145,9 @@ public class BindRegisterInfo extends BaseActivity implements MessageCallBack {
                             fromTime.getText().toString(),
                             toTime.getText().toString(),
                             leaveStartTime.getText().toString(),
-                            leaveEndTime.getText().toString()
-                            , EndStartTime.getText().toString()
-                            , EndEndTime.getText().toString()
+                            leaveEndTime.getText().toString(),
+                            EndStartTime.getText().toString(),
+                            EndEndTime.getText().toString()
                     ), this);
                 } else {
                     int tid = Integer.valueOf(SharedPrefsUtil.getValue(this, "teacherXML", "teacherid", "0"));
@@ -328,7 +328,7 @@ public class BindRegisterInfo extends BaseActivity implements MessageCallBack {
         });
 
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+
 
         gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -341,6 +341,7 @@ public class BindRegisterInfo extends BaseActivity implements MessageCallBack {
 
             }
         });
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         schoolList.setAdapter(adapter);
         schoolList.setSelection(2, true);
         schoolList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

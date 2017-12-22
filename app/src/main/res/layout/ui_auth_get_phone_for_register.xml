@@ -33,8 +33,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/login_215" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/login_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="密码登录"
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/login_yzcode"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="验证码登录"
+                    android:textSize="10dp" />
             </LinearLayout>
 
 
@@ -93,11 +117,14 @@
                         android:background="@android:color/transparent"
                         android:drawablePadding="@dimen/default_general_margin"
                         android:drawableStart="@drawable/ic_login_username_default"
-                        android:hint="输入手机号码"
+                        android:hint="请输入账号"
                         android:inputType="phone"
                         android:textColor="@color/black_80"
                         android:textColorHint="@color/gray_20"
-                        android:textSize="@dimen/default_medium_text_size" />
+                        android:textSize="@dimen/default_medium_text_size"
+                        android:visibility="visible" />
+
+
                 </LinearLayout>
 
                 <View
@@ -123,7 +150,8 @@
                         android:maxLines="1"
                         android:textColor="@color/black_80"
                         android:textColorHint="@color/gray_20"
-                        android:textSize="@dimen/default_medium_text_size" />
+                        android:textSize="@dimen/default_medium_text_size"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/yzCode"
@@ -133,7 +161,24 @@
                         android:layout_marginRight="5dp"
                         android:background="@drawable/border"
                         android:text="获取验证码"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/action_bar_default_height"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/default_small_padding"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="@dimen/default_general_margin"
+                        android:drawableStart="@drawable/ic_login_password_default"
+                        android:hint="请输入密码"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textColor="@color/black_80"
+                        android:textColorHint="@color/gray_20"
+                        android:textSize="@dimen/default_medium_text_size" />
                 </FrameLayout>
 
 
@@ -188,4 +233,5 @@
             android:scaleType="fitXY"
             android:src="@drawable/guid2" />
     </FrameLayout>
+
 </LinearLayout>
